@@ -144,8 +144,8 @@
 	}
 	?>
 </div>
-<script type="text/javascript" src="https://01.cdn.elanis.eu/portfolio/js/jquery.min.js"></script>
-<script type="text/javascript">
+<script src="https://01.cdn.elanis.eu/portfolio/js/jquery.min.js"></script>
+<script>
 var count = 0;
 $(document).ready(function(){
 		$('#background svg').attr("width",$(window).innerWidth());

@@ -182,7 +182,7 @@ Created by <a href="https://elanis.eu">Elanis</a> - Copyright 2017 - <a href="ht
 			count = parseInt($("#count").contents().find("body").text());
 			$('#hashCount').text(count);
 		});
-		document.getElementById("count").contentDocument.location.reload(true);
+		$('#count').attr('src', function ( i, val ) { return val; });
 	});
 </script>
 <iframe id="count" src="count" width="1" height="1" style="display: none;"></iframe>

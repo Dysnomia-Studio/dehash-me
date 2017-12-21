@@ -7,30 +7,31 @@ $cmd = new MongoDB\Driver\Command(["count" => "hashlists", "query" => []]);
 
 // Result
 $result = $manager->executeCommand('***REMOVED***', $cmd);
+$results = $result->toArray();
 
 // Get Total Online In 1 Hour Ago
 var_dump($result);
 echo "
 -----------------------------
 ";
-var_dump($result->toArray());
+var_dump($results);
 echo "
 -----------------------------
 ";
-var_dump(json_encode($result->toArray()));
+var_dump(json_encode($results));
 echo "
 -----------------------------
 ";
-var_dump(json_decode($result->toArray()));
+var_dump(json_decode($results));
 echo "
 -----------------------------
 ";
-var_dump($result->toArray()[0]);
+var_dump($results[0]);
 echo "
 -----------------------------
 ";
-var_dump($result->toArray()[0]['n']);
+var_dump($results[0]['n']);
 echo "
 -----------------------------
 ";
-echo $result->toArray()[0]['n'];
+echo $results['n'];

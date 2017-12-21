@@ -45,7 +45,6 @@
 		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 		<!-- Dehash.me - Responsive -->
 		<ins class="adsbygoogle"
-		     style="display:block"
 		     data-ad-client="***REMOVED***"
 		     data-ad-slot="***REMOVED***"
 		     data-ad-format="auto"></ins>

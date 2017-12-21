@@ -9,4 +9,4 @@ $cmd = new MongoDB\Driver\Command(["count" => "hashlists", "query" => []]);
 $result = $manager->executeCommand('***REMOVED***', $cmd);
 
 // Get Total Online In 1 Hour Ago
-echo $result->toArray()->n;
+echo $result->toArray()['n'];

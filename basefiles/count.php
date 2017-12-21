@@ -11,5 +11,5 @@ $result = $manager->executeCommand('***REMOVED***', $cmd);
 // Get Total Online In 1 Hour Ago
 var_dump($result);
 var_dump($result->toArray());
-var_dump($result->toArray()['n']);
-echo $result->toArray()['n'];
+var_dump($result->toArray()[0]['n']);
+echo $result->toArray()[0]['n'];

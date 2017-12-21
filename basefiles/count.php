@@ -17,6 +17,14 @@ var_dump($result->toArray());
 echo "
 -----------------------------
 ";
+var_dump(json_encode($result->toArray()));
+echo "
+-----------------------------
+";
+var_dump(json_decode($result->toArray()));
+echo "
+-----------------------------
+";
 var_dump($result->toArray()[0]);
 echo "
 -----------------------------

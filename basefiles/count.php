@@ -18,20 +18,12 @@ var_dump($results);
 echo "
 -----------------------------
 ";
-var_dump(json_encode($results));
-echo "
------------------------------
-";
-var_dump(json_decode($results));
-echo "
------------------------------
-";
 var_dump($results[0]);
 echo "
 -----------------------------
 ";
-var_dump($results[0]['n']);
+var_dump(json_decode(json_encode($results[0]), true)['n']);
 echo "
 -----------------------------
 ";
-echo $results['n'];
+echo json_decode(json_encode($results[0]), true)['n'];

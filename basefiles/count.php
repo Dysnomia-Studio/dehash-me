@@ -3,10 +3,10 @@
 $manager = new MongoDB\Driver\Manager("***REMOVED***");
 
 // Command
-$cmd = new MongoDB\Driver\Command(["count" => "account", "query" => []]);
+$cmd = new MongoDB\Driver\Command(["count" => "hashlists", "query" => []]);
 
 // Result
-$result = $manager->executeCommand('***REMOVED***.hashlists', $cmd);
+$result = $manager->executeCommand('***REMOVED***', $cmd);
 
 // Get Total Online In 1 Hour Ago
 echo count($result->toArray()->n);

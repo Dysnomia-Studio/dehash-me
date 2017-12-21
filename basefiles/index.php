@@ -174,8 +174,18 @@ $(document).ready(function(){
 </script>
 <footer>
 Created by <a href="https://elanis.eu">Elanis</a> - Copyright 2017 - <a href="https://elanis.eu/contact">Contact</a><br/>
-More than 1 800 000 hash stored !
+<span id="hashCount">More than 1 800 000</span> hash stored !
 </footer>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#count').on('load', function() {
+			count = parseInt($("#count").contents().find("body").text());
+			$('#hashCount').text(count);
+		});
+		document.getElementById("count").contentDocument.location.reload(true);
+	});
+</script>
+<iframe id="count" src="count" width="1" height="1" style="display: none;"></iframe>
 <?php
 // Store ip & add time to session
 $_SESSION['ip'] = get_client_ip();

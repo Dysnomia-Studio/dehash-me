@@ -1,0 +1,1 @@
+<script src='***REMOVED***/canvas/main.js'></script>

@@ -17,6 +17,10 @@ var_dump($result->toArray());
 echo "
 -----------------------------
 ";
+var_dump($result->toArray()[0]);
+echo "
+-----------------------------
+";
 var_dump($result->toArray()[0]['n']);
 echo "
 -----------------------------

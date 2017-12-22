@@ -47,6 +47,8 @@ h1 {
 
 	font-size: 3.5em;
 	margin: 2rem 0;
+
+	user-select: none;
 }
 h1 a {
 	color: inherit;

@@ -26,8 +26,8 @@
 		<h1><a href="/">Dehash.me</a></h1>
 	</header>
 	<section class="disclaimer">
-		This website was created to raise awareness on basic hashing weaknesses. This website own and generate its own dictionary. Some tips to developers if you don't want critcal data being revealed (and/or dehashed):<br/><br/>
-		1) Hash your critcal data (like passwords), and all data needed to check forms and not needed as is.<br/>
+		This website was created to raise awareness on basic hashing weaknesses. This website own and generate its own dictionary. Some tips to developers if you don't want critical data being revealed (and/or dehashed):<br/><br/>
+		1) Hash your critical data (like passwords), and all data needed to check forms and not needed as is.<br/>
 		2) Use multiple and strong hashes (like whirlpool or bcrypt)<br/>
 		3) Salt your hashes with long and alphanumericals "words", you can generate your salt by hashing the username for example.<br/>
 		<br/><br/>
@@ -180,6 +180,7 @@ Created by <a href="https://elanis.eu">Elanis</a> - Copyright 2017 - <a href="ht
 	$(document).ready(function() {
 		$('#count').on('load', function() {
 			count = parseInt($("#count").contents().find("body").text());
+			if(count == NaN || count == undefined) { return; }
 			$('#hashCount').text(count);
 		});
 		$('#count').attr('src', function ( i, val ) { return val; });

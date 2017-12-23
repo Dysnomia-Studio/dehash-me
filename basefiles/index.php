@@ -180,7 +180,7 @@ Created by <a href="https://elanis.eu">Elanis</a> - Copyright 2017 - <a href="ht
 	$(document).ready(function() {
 		$('#count').on('load', function() {
 			count = parseInt($("#count").contents().find("body").text());
-			if(isNaN(NaN) || count == undefined) { return; }
+			if(isNaN(count)) { return; }
 			$('#hashCount').text(count);
 		});
 		$('#count').attr('src', function ( i, val ) { return val; });

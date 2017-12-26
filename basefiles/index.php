@@ -174,14 +174,23 @@ $(document).ready(function(){
 </script>
 <footer>
 Created by <a href="https://elanis.eu">Elanis</a> - Copyright 2017 - <a href="https://elanis.eu/contact">Contact</a><br/>
-<span id="hashCount">More than 1 800 000</span> hash stored !
+<span id="hashCount">About 2,000,000</span> hash stored !
 </footer>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#count').on('load', function() {
-			count = parseInt($("#count").contents().find("body").text());
-			if(isNaN(count)) { return; }
-			$('#hashCount').text(count);
+			var countHash = parseInt($("#count").contents().find("body").text());
+			if(isNaN(countHash)) { return; }
+			var countHash = "" + countHash;
+			var text = [];
+			var i = countHash.length;
+			while (i > 0) {
+				i -= 3;
+				text.unshift(countHash.slice(i));
+				countHash = countHash.slice(0, i)
+			}
+
+			$('#hashCount').text(text);
 		});
 		$('#count').attr('src', function ( i, val ) { return val; });
 	});

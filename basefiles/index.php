@@ -173,7 +173,7 @@ $(document).ready(function(){
 });
 </script>
 <footer>
-Created by <a href="https://elanis.eu">Elanis</a> - Copyright 2017 - <a href="https://elanis.eu/contact">Contact</a><br/>
+Created by <a href="https://elanis.eu">Elanis</a> - Copyright 2017-<?php echo date('Y'); ?> - <a href="https://elanis.eu/contact">Contact</a><br/>
 <span id="hashCount">About 2,000,000</span> hash stored !
 </footer>
 <script type="text/javascript">

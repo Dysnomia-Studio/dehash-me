@@ -1,6 +1,6 @@
 <?php
 	$hashList = ["md2","md4","md5","sha1","sha256","sha384","sha512","ripemd128","ripemd160","ripemd256","ripemd320","whirlpool"];
-	$manager = new MongoDB\Driver\Manager($config['mongo_host']);
+	$manager = new MongoDB\Driver\Manager("***REMOVED***");
 
 	$table_content = "";
 
@@ -58,7 +58,6 @@
 		$drawResults = false;
 	} else if(isset($_POST['hash-button']) && !(empty($text))) {
 		// Verif du client sur mongo
-		$manager = new MongoDB\Driver\Manager("***REMOVED***");
 		$bulkHash = new MongoDB\Driver\BulkWrite(['ordered' => true]);
 		$insertCount = 0;
 		$alreadyHashed = [];
@@ -116,8 +115,6 @@
 
 	} elseif(isset($_POST['dehash-button'])) {
 		// Verif du client sur mongo
-		$manager = new MongoDB\Driver\Manager("***REMOVED***");
-
 		$filter = ["hash" => strtolower($text)];
 
 		$query = new MongoDB\Driver\Query($filter);

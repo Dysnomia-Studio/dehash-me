@@ -8,6 +8,12 @@
 	$text = htmlspecialchars(trim($text), ENT_QUOTES | ENT_HTML5, "UTF-8");
 
 	$drawResults = true;
+
+	$maxTime = (time() - 2); // Antispam measure: Prevent more than one call per 2 second
+
+	if(!isset($_SESSION['lastTime'])) {
+		$_SESSION['lastTime'] = 0;
+	}
 ?>
 <div id="background">
 	<svg id="background-0" class="backgrounds"></svg>
@@ -54,9 +60,11 @@
 		</script>
 	</div>
 	<?php
-	if(!isset($_SESSION['ip']) || $_SESSION['ip'] != get_client_ip()) { // Bots are not allowed here
+	if(!isset($_SESSION['ip']) || $_SESSION['ip'] != get_client_ip() || $_SESSION['lastTime'] > $maxTime)  { // Bots are not allowed here
 		$drawResults = false;
 	} else if(isset($_POST['hash-button']) && !(empty($text))) {
+		$_SESSION['lastTime'] = time();
+
 		// Verif du client sur mongo
 		$bulkHash = new MongoDB\Driver\BulkWrite(['ordered' => true]);
 		$insertCount = 0;
@@ -114,6 +122,8 @@
 		}
 
 	} elseif(isset($_POST['dehash-button'])) {
+		$_SESSION['lastTime'] = time();
+
 		// Verif du client sur mongo
 		$filter = ["hash" => strtolower($text)];
 

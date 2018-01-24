@@ -13,9 +13,9 @@ class mongoInterface {
 	 * @param      string  $dbURL  The database url
 	 */
 	private function connect($dbURL) {
-		if($dbURL==""||!isset($dbURL)) { //Wrong Use !
+		if(!isset($dbURL)||$dbURL=="") { //Wrong Use !
 			echo "DATABASE ERROR: All needed informations are not given !";
-			exit();
+			die();
 		}
 
 		if(!extension_loaded("mongodb")) {
@@ -23,7 +23,7 @@ class mongoInterface {
 			die();
 		} else {
 			try {
-				$this->manager = new MongoDB\Driver\Manager($dburl );
+				$this->manager = new MongoDB\Driver\Manager($dbURL);
 			}
 			catch (Exception $e) {
 			        die('Erreur : ' . $e->getMessage());
@@ -60,8 +60,21 @@ class mongoInterface {
 		}
 	}
 
-	public function updateContent() {
+	/**
+	 * Update content of a database
+	 *
+	 * @param      string  $db       The database
+	 * @param      <type>  $doc      The document
+	 * @param      <type>  $filter   The filter
+	 * @param      <type>  $content  The content
+	 */
+	public function updateContent($db,$doc,$filter,$content) {
+		if(is_string($db) && is_string($doc) && is_array($filter) && is_array($content)) {
+			$bulkUsers = new MongoDB\Driver\BulkWrite();
+			$bulkUsers->update($filter,$content);
 
+			$this->manager->executeBulkWrite($db.'.'.$doc, $bulkUsers);
+		}
 	}
 
 	/**
@@ -72,13 +85,27 @@ class mongoInterface {
 	 * @param      array   $content  The content needs to be inserted
 	 */
 	public function addContent($db,$doc,$content) {
-		$bulkUsers = new MongoDB\Driver\BulkWrite(['ordered' => true]);
-		$bulkUsers->insert($content);
+		if(is_string($db) && is_string($doc) && is_array($content)) {
+			$bulkUsers = new MongoDB\Driver\BulkWrite(['ordered' => true]);
+			$bulkUsers->insert($content);
 
-		$manager->executeBulkWrite($db.'.'.$doc, $bulkUsers);
+			$this->manager->executeBulkWrite($db.'.'.$doc, $bulkUsers);
+		}
 	}
 
-	public function removeContent() {
+	/**
+	 * Removes content from a database
+	 *
+	 * @param      string  $db      The database
+	 * @param      <type>  $doc     The document
+	 * @param      <type>  $filter  The filter
+	 */
+	public function removeContent($db,$doc,$filter) {
+		if(is_string($db) && is_string($doc) && is_array($filter)) {
+			$bulkUsers = new MongoDB\Driver\BulkWrite();
+			$bulkUsers->delete($filter);
 
+			$this->manager->executeBulkWrite($db.'.'.$doc, $bulkUsers);
+		} 
 	}
 }

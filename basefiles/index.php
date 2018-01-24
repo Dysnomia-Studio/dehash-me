@@ -37,8 +37,7 @@
 		2) Use multiple and strong hashes (like whirlpool or bcrypt)<br/>
 		3) Salt your hashes with long and alphanumericals "words", you can generate your salt by hashing the username for example.<br/>
 		<br/><br/>
-		<b><u>Warning:</u></b> Do not use this website in illegal or millitary purposes.<br/>
-		<b><u>Note</u>:</b> We don't keep any data on your requests.<br/><br/>
+		<b><u>Warning:</u></b> Do not use this website in illegal or millitary purposes. We are not responsible of bad (or illegal) usage of this tool.<br/>
 	</section>
 	<form class="hash-form" action="/" method="post">
 		<textarea id="input-text" name="input-text" placeholder="Some input text to hash or dehash ..."><?php echo $text; ?></textarea>
@@ -181,7 +180,7 @@ $(document).ready(function(){
 </script>
 <footer>
 Created by <a href="https://elanis.eu">Elanis</a> - Copyright 2017-<?php echo date('Y'); ?> - <a href="https://elanis.eu/contact">Contact</a><br/>
-<span id="hashCount">About 2,000,000</span> hash stored !
+<span id="hashCount">About than 3.5 million</span> hash stored !
 </footer>
 <script type="text/javascript">
 	$(document).ready(function() {

@@ -180,7 +180,7 @@ $(document).ready(function(){
 </script>
 <footer>
 Created by <a href="https://elanis.eu">Elanis</a> - Copyright 2017-<?php echo date('Y'); ?> - <a href="https://elanis.eu/contact">Contact</a><br/>
-<span id="hashCount">About than 3.5 million</span> hash stored !
+<span id="hashCount">About than 4.5 million</span> hash stored !
 </footer>
 <script type="text/javascript">
 	$(document).ready(function() {

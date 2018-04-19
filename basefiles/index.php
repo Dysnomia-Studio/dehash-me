@@ -34,7 +34,7 @@
 	<section class="disclaimer">
 		This website was created to raise awareness on basic hashing weaknesses. This website own and generate its own dictionary. Some tips to developers if you don't want critical data being revealed (and/or dehashed):<br/><br/>
 		1) Hash your critical data (like passwords), and all data needed to check forms and not needed as is.<br/>
-		2) Use multiple and strong hashes (like whirlpool or bcrypt)<br/>
+		2) Use multiple and strong hashes (like whirlpool, bcrypt or argon2)<br/>
 		3) Salt your hashes with long and alphanumericals "words", you can generate your salt by hashing the username for example.<br/>
 		<br/><br/>
 		<b><u>Warning:</u></b> Do not use this website in illegal or millitary purposes. We are not responsible of bad (or illegal) usage of this tool.<br/>
@@ -160,9 +160,9 @@ $(document).ready(function(){
 	setInterval(function() {
 		let i = count++;
 		count%=10;
-		$('#background-'+ i).append('<circle id="bubble-'+ i + '" fill="#27ae60" fill-opacity="0.1" class="background-bubble" cx="'
-			+ Math.floor(Math.random()*$(window).innerWidth()) + '" cy="'
-			+ Math.floor(Math.random()*$(window).innerHeight()) + '" r="0" />');
+		$('#background-'+ i).append('<circle id="bubble-'+ i + '" fill="#27ae60" fill-opacity="0.1" class="background-bubble" cx="' + 
+			Math.floor(Math.random()*$(window).innerWidth()) + '" cy="' +
+			Math.floor(Math.random()*$(window).innerHeight()) + '" r="0" />');
 
 		$('#background-'+ i).html($('#background-'+ i).html());
 
@@ -180,20 +180,20 @@ $(document).ready(function(){
 </script>
 <footer>
 Created by <a href="https://elanis.eu">Elanis</a> - Copyright 2017-<?php echo date('Y'); ?> - <a href="https://elanis.eu/contact">Contact</a><br/>
-<span id="hashCount">About than 7 million</span> hash stored !
+<span id="hashCount">About than 7.5 million</span> hash stored !
 </footer>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#count').on('load', function() {
 			var countHash = parseInt($("#count").contents().find("body").text());
 			if(isNaN(countHash)) { return; }
-			var countHash = "" + countHash;
+			countHash = "" + countHash;
 			var text = [];
 			var i = countHash.length;
 			while (i > 0) {
 				i -= 3;
 				text.unshift(countHash.slice(i));
-				countHash = countHash.slice(0, i)
+				countHash = countHash.slice(0, i);
 			}
 
 			$('#hashCount').text(text);

@@ -179,8 +179,8 @@ $(document).ready(function(){
 });
 </script>
 <footer>
-Created by <a href="https://elanis.eu">Elanis</a> - Copyright 2017-<?php echo date('Y'); ?> - <a href="https://elanis.eu/contact">Contact</a><br/>
-<span id="hashCount">About than 7.5 million</span> hash stored !
+Created by <a href="https://dysnomia.studio">Dysnomia</a> - Copyright 2017-<?php echo date('Y'); ?><br/>
+<span id="hashCount">About than 8 million</span> hash stored !
 </footer>
 <script type="text/javascript">
 	$(document).ready(function() {

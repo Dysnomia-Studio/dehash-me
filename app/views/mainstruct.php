@@ -11,7 +11,7 @@ $debut = round(microtime(true) * 1000);
 <html lang="<?= $lang->getLanguage(); ?>">
 	<head>
 		<title>Dehash.me - Hash texts and reverse hashes instantly !</title>
-		<meta name="theme-color" content="#333333"><meta charset="UTF-8">
+		<meta name="theme-color" content="#333333">
 		<meta charset="UTF-8">
 		<!-- On prepare le charset , les mots clés , le fichier css et l'icone du site -->
 		<meta name="keywords" content="hash, unhash, encrypt, decrypt, reverse, password, free, md5, md2, md4, md5, sha1, sha256 , sha384, sha512, ripemd128, ripemd160, ripemd256, ripemd320, whirlpool">
@@ -60,5 +60,5 @@ $debut = round(microtime(true) * 1000);
 			}
 		?>
 	</body>
-	<!-- Page generated in <?= ($debut - round(microtime(true) * 1000)) ?> ms -->
+	<!-- Page generated in <?= (round(microtime(true) * 1000) - $debut) ?> ms -->
 </html>

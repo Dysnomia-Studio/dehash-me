@@ -99,27 +99,29 @@
 		});
 	});
 	</script>
-	<footer>
-	Created by <a href="https://dysnomia.studio" target="_blank">Dysnomia</a> - Copyright 2017-<?php echo date('Y'); ?><br/>
-	<span id="hashCount">About than 8 million</span> hash stored !
-	</footer>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#count').on('load', function() {
-				var countHash = parseInt($("#count").contents().find("body").text());
-				if(isNaN(countHash)) { return; }
-				countHash = "" + countHash;
-				var text = [];
-				var i = countHash.length;
-				while (i > 0) {
-					i -= 3;
-					text.unshift(countHash.slice(i));
-					countHash = countHash.slice(0, i);
-				}
+</div>
 
-				$('#hashCount').text(text);
-			});
-			$('#count').attr('src', function ( i, val ) { return val; });
+<footer>
+Created by <a href="https://dysnomia.studio" target="_blank">Dysnomia</a> - Copyright 2017-<?php echo date('Y'); ?><br/>
+<span id="hashCount">About than 8.5 million</span> hash stored !
+</footer>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#count').on('load', function() {
+			var countHash = parseInt($("#count").contents().find("body").text());
+			if(isNaN(countHash)) { return; }
+			countHash = "" + countHash;
+			var text = [];
+			var i = countHash.length;
+			while (i > 0) {
+				i -= 3;
+				text.unshift(countHash.slice(i));
+				countHash = countHash.slice(0, i);
+			}
+
+			$('#hashCount').text(text);
 		});
-	</script>
-	<iframe id="count" src="count" width="1" height="1" style="display: none;"></iframe>
+		$('#count').attr('src', function ( i, val ) { return val; });
+	});
+</script>
+<iframe id="count" src="count" width="1" height="1" style="display: none;"></iframe>

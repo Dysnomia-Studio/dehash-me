@@ -8,7 +8,7 @@ $debut = round(microtime(true) * 1000);
 	Don't copy this without permission
 	I hope this code is readable.
 -->
-<html>
+<html lang="<?= $lang->getLanguage(); ?>">
 	<head>
 		<title>Dehash.me - Hash texts and reverse hashes instantly !</title>
 		<meta name="theme-color" content="#333333"><meta charset="UTF-8">

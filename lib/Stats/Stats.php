@@ -16,7 +16,6 @@ abstract class Stats extends MongoInterface {
                 $visit['user-agent'] = $_SERVER['HTTP_USER_AGENT'];
             }
             
-            $visit["ip"] = Web::get_client_ip();
             $visit["url"] = Web::get_full_url($_SERVER);
             $visit["origin"] = (isset($_SERVER['HTTP_REFERER']))?$_SERVER['HTTP_REFERER']:null;
             $visit["time"] = time();

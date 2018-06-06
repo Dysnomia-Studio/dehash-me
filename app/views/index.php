@@ -113,11 +113,12 @@ Created by <a href="https://dysnomia.studio" target="_blank">Dysnomia</a> - Copy
 			countHash = "" + countHash;
 			var text = [];
 			var i = countHash.length;
-			while (i > 0) {
+			while(i>2) {
 				i -= 3;
 				text.unshift(countHash.slice(i));
 				countHash = countHash.slice(0, i);
 			}
+			text.unshift(countHash);
 
 			$('#hashCount').text(text);
 		});

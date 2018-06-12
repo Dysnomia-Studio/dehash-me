@@ -3,6 +3,11 @@ class Router {
 	private $cacheBlacklist = array();
 	private $cacheTime = 86400; // in seconds
 
+	function __construct() {
+		global $config;
+		$this->cacheBlacklist = $config['cacheBlacklist'];
+	}
+
 	public function get($pagename) {
 		// Default values
 		$data = array();

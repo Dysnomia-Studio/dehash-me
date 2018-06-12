@@ -1,6 +1,5 @@
 <?php
 abstract class Security {
-	private $hashCount=1;
 	/**
 	 * Hash a text with my custom algorithms
 	 *
@@ -8,14 +7,16 @@ abstract class Security {
 	 *
 	 * @return     string  Hashed text
 	 */
-	static function hashPassword($hashType=-1) {
+	static function hashPassword($data, $hashType=-1) {
+		$hashCount=1;
+		
 		if($hashType < 1 || $hashType > $hashCount) {
 			$hashType = $hashCount;
 		}
 
-		$hashType = "hashV$hashType";
+		$hashType = 'hashV'.$hashType;
 
-		return $this->$hashType;
+		return Security::$hashType($data);
 	}
 
 	static function hashV1($data) {

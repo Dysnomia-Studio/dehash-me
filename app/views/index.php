@@ -103,7 +103,7 @@
 
 <footer>
 Created by <a href="https://dysnomia.studio" target="_blank">Dysnomia</a> - Copyright 2017-<?php echo date('Y'); ?><br/>
-<span id="hashCount">About than 8.5 million</span> hash stored !
+<span id="hashCount">About than 10 million</span> hash stored !
 </footer>
 <script type="text/javascript">
 	$(document).ready(function() {

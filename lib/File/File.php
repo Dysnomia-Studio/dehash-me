@@ -17,7 +17,7 @@ abstract class File {
 		$scanning=true;
 
 
-		while($scanning==true) {
+		while($scanning) {
 			if(empty($folderlist[$i])||!isset($folderlist[$i])) {
 				$scanning=false;
 			} else {

@@ -20,7 +20,7 @@ abstract class Web {
 	 * @return     bool    online or not
 	 */
 	static function serverStatus($server,$port) {
-		return=((@fsockopen($server,$port, $errno, $errstr, 1)) >= 1)?true:false;
+		return ((@fsockopen($server,$port, $errno, $errstr, 1)) >= 1)?true:false;
 	}
 
 	/**

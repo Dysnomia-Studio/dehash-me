@@ -15,8 +15,9 @@ abstract class System {
 	            }
 	        }
 
-	        if ((int)$num_cores <= 0)
+	        if ((int)$num_cores <= 0) {
 	            $num_cores = 1;
+	        }
 
 	        return (int)$num_cores;
 	}

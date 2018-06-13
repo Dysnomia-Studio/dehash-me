@@ -20,7 +20,7 @@ abstract class Web {
 	 * @return     bool    online or not
 	 */
 	static function serverStatus($server,$port) {
-		return ((@fsockopen($server,$port, $errno, $errstr, 1)) >= 1)?true:false;
+		return (@fsockopen($server,$port, $errno, $errstr, 1));
 	}
 
 	/**
@@ -64,21 +64,23 @@ abstract class Web {
 	 * @return     string  The client ip.
 	 */
 	static function get_client_ip() {
+		$address = 'UNKNOWN IP';
+
 	    if (getenv('HTTP_CLIENT_IP')) {
-	        return getenv('HTTP_CLIENT_IP');
+	        $address = getenv('HTTP_CLIENT_IP');
 	    } else if(getenv('HTTP_X_FORWARDED_FOR')) {
-	        return getenv('HTTP_X_FORWARDED_FOR');
+	        $address = getenv('HTTP_X_FORWARDED_FOR');
 	    } else if(getenv('HTTP_X_FORWARDED')) {
-	        return getenv('HTTP_X_FORWARDED');
+	        $address = getenv('HTTP_X_FORWARDED');
 	    } else if(getenv('HTTP_FORWARDED_FOR')) {
-	        return getenv('HTTP_FORWARDED_FOR');
+	        $address = getenv('HTTP_FORWARDED_FOR');
 	    } else if(getenv('HTTP_FORWARDED')) {
-	    	return getenv('HTTP_FORWARDED');
+	    	$address = getenv('HTTP_FORWARDED');
 	    } else if(getenv('REMOTE_ADDR')) {
-	        return getenv('REMOTE_ADDR');
+	        $address = getenv('REMOTE_ADDR');
 	    }
 
-	    return 'UNKNOWN IP';
+	    return $address;
 	}
 
 	/**

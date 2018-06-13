@@ -53,15 +53,12 @@ class SQLInterface {
 	 * @return     array           The content.
 	 */
 	public function getContent($table,$min=0,$size=1000000,$order="") {
-		if(is_string($table)) {
+		if(is_string($table) && is_int($min)  && is_int($size) && is_string($order)) {
+
 			$query = $this->bd->prepare('SELECT * FROM '.$table.' ORDER BY '.$order.' LIMIT '.$min.', '.$size);
 			$query->execute();
-			$data = array();
-			$i = 0;
-			while($data1 = $query->fetch()) {
-				$data[$i] = $data1;
-				$i++;
-			}
+
+			$data = $query->fetchAll();
 			$query->CloseCursor();
 
 			return $data;
@@ -83,7 +80,7 @@ class SQLInterface {
 	 * @return     array           The condition content.
 	 */
 	public function getCondContent($table,$where,$min=0,$size=1000000,$order="id") {
-		if(is_string($table)&&is_array($where)) {
+		if(is_string($table) && is_array($where) && is_int($min)  && is_int($size) && is_string($order)) {
 			$where_cond = "";
 
 			for($i=0; $i<sizeof($where); $i++) {
@@ -106,12 +103,8 @@ class SQLInterface {
 			}
 
 			$query->execute();
-			$data = array();
-			$i = 0;
-			while($data1 = $query->fetch()) {
-				$data[$i] = $data1;
-				$i++;
-			}
+
+			$data = $query->fetchAll();
 			$query->CloseCursor();
 
 			return $data;
@@ -296,9 +289,7 @@ class SQLInterface {
 	 * @return     array|boolean  ( description_of_the_return_value )
 	 */
 	public function selectQuery($query,$bindValue,$oneResult=false) {
-
 		if(is_string($query)&&is_array($bindValue)&&is_bool($oneResult)) {
-
 			$query = $this->bd->prepare($query);
 
 			foreach($bindValue as $name => $value) {
@@ -310,19 +301,15 @@ class SQLInterface {
 
 				$query->bindValue(':'.$name,$value,$pdoType);
 			}
+			$query->execute();
 
 			if($oneResult) {
 				$data = $query->fetch();
 				$query->CloseCursor();
+
 				return $data;
 			} else {
-				$query->execute();
-				$data = array();
-				$i = 0;
-				while($data1 = $query->fetch()) {
-					$data[$i] = $data1;
-					$i++;
-				}
+				$data = $query->fetchAll();
 				$query->CloseCursor();
 
 				return $data;	

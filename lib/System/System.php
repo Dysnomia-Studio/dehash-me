@@ -5,21 +5,18 @@ abstract class System {
 	 *
 	 * @return     <type>  Number of core.
 	 */
-	static function countCore()
-	{
-	        if (!($num_cores = shell_exec('/bin/grep -c ^processor /proc/cpuinfo')))
-	        {
-	            if (!($num_cores = trim(shell_exec('/usr/bin/nproc'))))
-	            {
+	static function countCore() {
+	        if (!($num_cores = shell_exec('/bin/grep -c ^processor /proc/cpuinfo'))) {
+	            if (!($num_cores = trim(shell_exec('/usr/bin/nproc')))) {
 	                $num_cores = 1;
 	            }
 	        }
 
-	        if ((int)$num_cores <= 0) {
+	        if ((int) $num_cores <= 0) {
 	            $num_cores = 1;
 	        }
 
-	        return (int)$num_cores;
+	        return (int) $num_cores;
 	}
 
 	/**
@@ -27,8 +24,7 @@ abstract class System {
 	 *
 	 * @return     array  stats
 	 */
-	static function CpuStats()
-	{
+	static function CpuStats() {
 		$cpu = array();
 		
 		//Nombre de Coeurs
@@ -39,20 +35,16 @@ abstract class System {
 		$cpu['temp'] = 'N/A';
 		$cpu['freq'] = 'N/A';
 		
-		if ($cpuinfo = shell_exec('cat /proc/cpuinfo'))
-		{
+		if($cpuinfo = shell_exec('cat /proc/cpuinfo')) {
 			$processors = preg_split('/\s?\n\s?\n/', trim($cpuinfo));
 
-			foreach ($processors as $processor)
-			{
+			foreach ($processors as $processor) {
 				$details = preg_split('/\n/', $processor, -1, PREG_SPLIT_NO_EMPTY);
 
-				foreach ($details as $detail)
-				{
+				foreach ($details as $detail) {
 					list($key, $value) = preg_split('/\s*:\s*/', trim($detail));
 
-					switch (strtolower($key))
-					{
+					switch (strtolower($key)) {
 						case 'model name':
 						case 'cpu model':
 						case 'cpu':
@@ -64,36 +56,33 @@ abstract class System {
 						case 'clock':
 							$cpu['freq'] = $value.' MHz';
 						break;
+
+						default:
+							// Do nothing
 					}
 				}
 			}
 		}
 		
-		if ($cpu['freq'] == 'N/A')
-		{
-			if ($f = shell_exec('cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq'))
-			{
+		if ($cpu['freq'] == 'N/A') {
+			if ($f = shell_exec('cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq')) {
 				$f = $f / 1000;
 				$cpu['freq'] = $f.' MHz';
 			}
 		}
 		
 		// CPU Temp
-	    if (exec('/usr/bin/sensors | grep -E "^(CPU Temp|Core 0)" | cut -d \'+\' -f2 | cut -d \'.\' -f1', $t))
-	    {
+	    if (exec('/usr/bin/sensors | grep -E "^(CPU Temp|Core 0)" | cut -d \'+\' -f2 | cut -d \'.\' -f1', $t)) {
 	        if (isset($t[0]))
 	            $cpu['temp'] = $t[0].' °C';
-	    }
-	    else
-	    {
-	        if (exec('cat /sys/class/thermal/thermal_zone0/temp', $t))
-	        {
+	    } else {
+	        if (exec('cat /sys/class/thermal/thermal_zone0/temp', $t)) {
 	            $cpu['temp'] = round($t[0] / 1000,1).' °C';
 	        }
 	    }
 
-
 	    $cpu['util'] = sys_getloadavg();
+
 		return $cpu;
 	}
 
@@ -107,12 +96,9 @@ abstract class System {
 		$system = array();
 		$system['hostname'] = php_uname('n');
 		
-		if (!($system['os'] = shell_exec('/usr/bin/lsb_release -ds | cut -d= -f2 | tr -d \'"\'')))
-		{
-			if(!($system['os'] = shell_exec('cat /etc/system-release | cut -d= -f2 | tr -d \'"\''))) 
-			{
-				if (!($system['os'] = shell_exec('find /etc/*-release -type f -exec cat {} \; | grep PRETTY_NAME | tail -n 1 | cut -d= -f2 | tr -d \'"\'')))
-				{
+		if (!($system['os'] = shell_exec('/usr/bin/lsb_release -ds | cut -d= -f2 | tr -d \'"\''))) {
+			if(!($system['os'] = shell_exec('cat /etc/system-release | cut -d= -f2 | tr -d \'"\''))) {
+				if (!($system['os'] = shell_exec('find /etc/*-release -type f -exec cat {} \; | grep PRETTY_NAME | tail -n 1 | cut -d= -f2 | tr -d \'"\''))) {
 					$system['os'] = 'N.A';
 				}
 			}
@@ -120,18 +106,14 @@ abstract class System {
 		$system['os'] = trim($system['os'], '"');
 		$system['os'] = str_replace("\n", '', $system['os']);
 		
-		if (!($upt_tmp = shell_exec('cat /proc/uptime')))
-		{
+		if (!($upt_tmp = shell_exec('cat /proc/uptime'))) {
 			$system['last_boot'] = 'N.A';
-		}
-		else
-		{
+		} else {
 			$upt = explode(' ', $upt_tmp);
 			$system['last_boot'] = date('d-m-Y H:i:s', time() - intval($upt[0]));
 		}
 
-		if (!($system['current_users'] = shell_exec('who -u | awk \'{ print $1 }\' | wc -l')))
-		{
+		if (!($system['current_users'] = shell_exec('who -u | awk \'{ print $1 }\' | wc -l'))) {
 			$system['current_users'] = 'N.A';
 		}
 		
@@ -143,18 +125,15 @@ abstract class System {
 	 *
 	 * @return     array  stats
 	 */
-	static function MemoryStats()
-	{
+	static function MemoryStats() {
 		$memory = array();
-		if (!($memory['total'] = (int)shell_exec('grep MemTotal /proc/meminfo | awk \'{print $2}\'')))
-		{
+		if (!($memory['total'] = (int)shell_exec('grep MemTotal /proc/meminfo | awk \'{print $2}\''))) {
 			$memory['total'] = 0;
 		}
 		
 		$memory['free'] = 0;
 
-		if (shell_exec('cat /proc/meminfo'))
-		{
+		if (shell_exec('cat /proc/meminfo')) {
 			$free    = shell_exec('grep MemFree /proc/meminfo | awk \'{print $2}\'');
 			$buffers = shell_exec('grep Buffers /proc/meminfo | awk \'{print $2}\'');
 			$cached  = shell_exec('grep Cached /proc/meminfo | awk \'{print $2}\'');
@@ -176,18 +155,15 @@ abstract class System {
 	 *
 	 * @return     array  stats
 	 */
-	static function SwapStats()
-	{
+	static function SwapStats() {
 		$swap = array();
-		if (!($swap['total'] = (int) shell_exec('grep SwapTotal /proc/meminfo | awk \'{print $2}\'')))
-		{
+		if (!($swap['total'] = (int) shell_exec('grep SwapTotal /proc/meminfo | awk \'{print $2}\''))) {
 			$swap['total'] = 0;
 		}
 		
 		$swap['free'] = 0;
 
-		if (!($swap['free'] = (int) shell_exec('grep SwapFree /proc/meminfo | awk \'{print $2}\'')))
-		{
+		if (!($swap['free'] = (int) shell_exec('grep SwapFree /proc/meminfo | awk \'{print $2}\''))) {
 		    $swap['free'] = 0;
 		}
 
@@ -205,8 +181,7 @@ abstract class System {
 	 *
 	 * @return     array  usage
 	 */
-	static function DiskUsage()
-	{
+	static function DiskUsage() {
 		$disk = array();
 		$disk['free'] = disk_free_space ("/");
 		$disk['total'] = disk_total_space ("/");

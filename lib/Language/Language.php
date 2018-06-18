@@ -97,7 +97,7 @@ class Language {
 	 */
 	private function importLanguageFiles() {
 		$filesList = scandir(DIR_LANG.$this->language);
-		foreach ($filesList as $file_key => $file_value) {
+		foreach ($filesList as $file_value) {
 			$parts = explode(".",$file_value);
 			if($parts[1]=="php") {
 				require_once(DIR_LANG.$this->language.DIRECTORY_SEPARATOR.$file_value);

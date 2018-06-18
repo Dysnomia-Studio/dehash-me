@@ -73,8 +73,7 @@ class ReCaptcha
             $req .= $key . '=' . urlencode(stripslashes($value)) . '&';
         }
         // Cut the last '&'
-        $req=substr($req, 0, strlen($req)-1);
-        return $req;
+        return substr($req, 0, strlen($req)-1);
     }
     /**
      * Submits an HTTP GET to a reCAPTCHA server.
@@ -87,8 +86,7 @@ class ReCaptcha
     private function _submitHTTPGet($path, $data)
     {
         $req = $this->_encodeQS($data);
-        $response = file_get_contents($path . $req);
-        return $response;
+        return file_get_contents($path . $req);
     }
     /**
      * Calls the reCAPTCHA siteverify API to verify whether the user passes

@@ -68,6 +68,18 @@ class SQLInterface {
 		}
 	}
 
+	private function bindValues($query, $bindValue) {
+		foreach($bindValue as $name => $value) {
+			if(is_int($value) || is_bool($value)) {
+				$pdoType = PDO::PARAM_INT;
+			} else {
+				$pdoType = PDO::PARAM_STR;
+			}
+
+			$query->bindValue(':'.$name, $value, $pdoType);
+		}
+	}
+
 	/**
 	 * Gets content of a table depends on specified conditions.
 	 *
@@ -93,14 +105,7 @@ class SQLInterface {
 
 			$query = $this->bd->prepare('SELECT * FROM '.$table.' WHERE '.$where_cond.' ORDER BY '.$order.' LIMIT '.$min.', '.$size);
 
-			for($i=0; $i<sizeof($where); $i++) {
-				if($where[$i][2]=="int") {
-					$query->bindValue(':'.$where[$i][0],$where[$i][1],PDO::PARAM_INT);
-
-				} else {
-					$query->bindValue(':'.$where[$i][0],strtolower($where[$i][1]),PDO::PARAM_STR);
-				}
-			}
+			$this->bindValues($query, $where);
 
 			$query->execute();
 
@@ -143,14 +148,7 @@ class SQLInterface {
 
 			$query = $this->bd->prepare('INSERT INTO '.$table.$content);
 
-			for($i=0; $i<sizeof($data); $i++) {
-				if($data[$i][2]=="int") {
-					$query->bindValue(':'.$data[$i][0],$data[$i][1],PDO::PARAM_INT);
-
-				} else {
-					$query->bindValue(':'.$data[$i][0],$data[$i][1],PDO::PARAM_STR);
-				}
-			}
+			$this->bindValues($query, $data);
 
 			$query->execute();
 			$query->CloseCursor();
@@ -184,23 +182,8 @@ class SQLInterface {
 
 			$query = $this->bd->prepare('UPDATE '.$table.' SET '.$set_cond.' WHERE '.$where_cond);
 
-			for($i=0; $i<sizeof($data); $i++) {
-				if($data[$i][2]=="int") {
-					$query->bindValue(':'.$data[$i][0],$data[$i][1],PDO::PARAM_INT);
-
-				} else {
-					$query->bindValue(':'.$data[$i][0],$data[$i][1],PDO::PARAM_STR);
-				}
-			}
-
-			for($i=0; $i<sizeof($where); $i++) {
-				if($where[$i][2]=="int") {
-					$query->bindValue(':'.$where[$i][0],$where[$i][1],PDO::PARAM_INT);
-
-				} else {
-					$query->bindValue(':'.$where[$i][0],$where[$i][1],PDO::PARAM_STR);
-				}
-			}
+			$this->bindValues($query, $data);
+			$this->bindValues($query, $where);
 
 			$query->execute();
 			$query->CloseCursor();
@@ -226,14 +209,7 @@ class SQLInterface {
 
 			$query = $this->bd->prepare('DELETE FROM '.$table.' WHERE '.$where_cond);
 
-			for($i=0; $i<sizeof($where); $i++) {
-				if($where[$i][2]=="int") {
-					$query->bindValue(':'.$where[$i][0],$where[$i][1],PDO::PARAM_INT);
-
-				} else {
-					$query->bindValue(':'.$where[$i][0],$where[$i][1],PDO::PARAM_STR);
-				}
-			}
+			$this->bindValues($query, $where);
 
 			$query->execute();
 			$query->CloseCursor();
@@ -292,15 +268,8 @@ class SQLInterface {
 		if(is_string($query)&&is_array($bindValue)&&is_bool($oneResult)) {
 			$query = $this->bd->prepare($query);
 
-			foreach($bindValue as $name => $value) {
-				if(is_int($value) || is_bool($value)) {
-					$pdoType = PDO::PARAM_INT;
-				} else {
-					$pdoType = PDO::PARAM_STR;
-				}
-
-				$query->bindValue(':'.$name,$value,$pdoType);
-			}
+			$this->bindValues($query, $bindValue);
+			
 			$query->execute();
 
 			if($oneResult) {
@@ -330,15 +299,7 @@ class SQLInterface {
 
 			$query = $this->bd->prepare($query);
 
-			foreach($bindValue as $name => $value) {
-				if(is_int($value) || is_bool($value)) {
-					$pdoType = PDO::PARAM_INT;
-				} else {
-					$pdoType = PDO::PARAM_STR;
-				}
-
-				$query->bindValue(':'.$name,$value,$pdoType);
-			}
+			$this->bindValues($query, $bindValue);
 
 			$query->execute();
 			$query->CloseCursor();

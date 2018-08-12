@@ -41,12 +41,11 @@ class HashManager extends MongoInterface {
 		$alreadyHashedRaw = $this->getCondContent(
 			'***REMOVED***',
 			'hashlists',
-			["text" => strtolower($word)]); 
+			["text" => $word]); 
 
 		foreach ($alreadyHashedRaw as $hash) {
 			$hash = (array) $hash;
-			if(isset($hash['text']) && !empty($hash['text']) 
-				&& isset($hash['type']) && !empty($hash['type']) 
+			if(isset($hash['type']) && !empty($hash['type']) 
 				&& isset($hash['hash']) && !empty($hash['hash'])) {
 				$alreadyHashed[$hash['type']]=true;
 				
@@ -73,7 +72,7 @@ class HashManager extends MongoInterface {
 
 				// Text
 				array_push($drawHashes, [
-					"text" => $hashedText,
+					"hash" => $hashedText,
 					"type" => $hashType
 				]);
 			}

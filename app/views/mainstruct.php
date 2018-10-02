@@ -10,12 +10,12 @@ $debut = round(microtime(true) * 1000);
 -->
 <html lang="<?= $lang->getLanguage(); ?>">
 	<head>
-		<title>Dehash.me - Hash texts and reverse hashes instantly !</title>
+		<title>Dehash.me - Hash & Dehash</title>
 		<meta name="theme-color" content="#333333">
 		<meta charset="UTF-8">
 		<!-- On prepare le charset , les mots clés , le fichier css et l'icone du site -->
-		<meta name="keywords" content="hash, unhash, encrypt, decrypt, reverse, password, free, md5, md2, md4, md5, sha1, sha256 , sha384, sha512, ripemd128, ripemd160, ripemd256, ripemd320, whirlpool">
-		<meta name="description" content="" />
+		<meta name="keywords" content="hash, unhash, encrypt, decrypt, reverse, password, free, md5, md2, md4, md5, sha1, sha256 , sha384, sha512, ripemd128, ripemd160, ripemd256, ripemd320, whirlpool, password">
+		<meta name="description" content="Hash texts and reverse hashes instantly and easily !" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<link rel="shortcut icon" type="image/png" href="./img/favicon.png"/>

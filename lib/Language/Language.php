@@ -8,6 +8,7 @@ class Language {
 	private $languageList;
 	private $defaultLanguage;
 	private $language;
+	private $cachedLanguage;
 
 	/**
 	 * Constructor
@@ -16,6 +17,7 @@ class Language {
 		global $config;
 
 		$this->languageList = $config["languageList"];
+		$this->cachedLanguage = "";
 
 		foreach ($this->languageList as $lang_key => $lang_value) {
 			$this->defaultLanguage = $lang_key;
@@ -92,10 +94,16 @@ class Language {
 		return $this->language;
 	}
 
+	public function drawCached() {
+		echo $this->cachedLanguage;
+	}
+
 	/**
 	 * Import (require) all language files from selected language
 	 */
 	private function importLanguageFiles() {
+		ob_start();
+
 		$filesList = scandir(DIR_LANG.$this->language);
 		foreach ($filesList as $file_value) {
 			$parts = explode(".",$file_value);
@@ -103,6 +111,9 @@ class Language {
 				require_once(DIR_LANG.$this->language.DIRECTORY_SEPARATOR.$file_value);
 			}
 		}
+
+		$this->cachedLanguage = ob_get_contents(); // copie du contenu du tampon dans une chaîne
+		ob_end_clean(); // effacement du contenu du tampon et arrêt de son fonctionnement
 	}
 
 	/**

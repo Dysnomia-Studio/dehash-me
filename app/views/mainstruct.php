@@ -1,5 +1,30 @@
 <?php 
 $debut = round(microtime(true) * 1000);
+
+$pageData['cacheName'] = str_replace("_cookies-true", "", $pageData['cacheName']);
+
+if($pageData['pageName'] == "api.php") {
+	header('Content-Type: application/json');
+
+	if(file_exists($pageData['cacheName'])) { // Read HTML
+		readfile($pageData['cacheName']);
+	} else {
+		ob_start(); // ouverture du tampon
+		
+		include(DIR_VIEW.$pageData['pageName']);
+
+		$pageContent = ob_get_contents(); // copie du contenu du tampon dans une chaîne
+		ob_end_clean(); // effacement du contenu du tampon et arrêt de son fonctionnement
+
+		if($pageData['writeCache']) {
+			file_put_contents($pageData['cacheName'], $pageContent); // on écrit la chaîne précédemment récupérée ($pageContent) dans un fichier ($pageData['cacheName'])
+		}
+
+		echo $pageContent;
+	}
+
+	exit();
+}
 ?>
 <!DOCTYPE html>
 <!-- 

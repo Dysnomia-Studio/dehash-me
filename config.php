@@ -7,5 +7,5 @@ $config = array(
 		//'de' => 'Deutsch',
 		//'ru' => 'русский'
 	],
-	"cacheBlacklist" => []
+	"cacheBlacklist" => [ ]
 );

@@ -42,7 +42,7 @@ if(!isset($_SESSION['ip']) && (isset($_GET['cookies']) && $_GET['cookies'] == 't
 		$data = $hashMngr->getByHash($text);
 	}
 
-	if($text != '') {
+	if($data != []) {
 		$_SESSION['lastTime'] = time();
 
 		$dataOut = [];

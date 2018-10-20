@@ -6,7 +6,7 @@ $pageData['cacheName'] = str_replace("_cookies-true", "", $pageData['cacheName']
 if($pageData['pageName'] == "api.php") {
 	header('Content-Type: application/json');
 
-	if(file_exists($pageData['cacheName'])) { // Read HTML
+	/*if(file_exists($pageData['cacheName'])) { // Read HTML
 		readfile($pageData['cacheName']);
 	} else {
 		ob_start(); // ouverture du tampon
@@ -21,7 +21,9 @@ if($pageData['pageName'] == "api.php") {
 		}
 
 		echo $pageContent;
-	}
+	}*/
+
+	echo json_encode([]);
 
 	exit();
 }

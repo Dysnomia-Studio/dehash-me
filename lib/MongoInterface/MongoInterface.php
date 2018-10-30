@@ -74,10 +74,10 @@ class MongoInterface {
 	 */
 	public function updateContent($db,$doc,$filter,$content) {
 		if(is_string($db) && is_string($doc) && is_array($filter) && is_array($content)) {
-			$bulkUsers = new MongoDB\Driver\BulkWrite();
-			$bulkUsers->update($filter,$content);
+			$bulk = new MongoDB\Driver\BulkWrite();
+			$bulk->update($filter,$content);
 
-			$this->manager->executeBulkWrite($db.'.'.$doc, $bulkUsers);
+			$this->manager->executeBulkWrite($db.'.'.$doc, $bulk);
 		}
 	}
 
@@ -90,10 +90,10 @@ class MongoInterface {
 	 */
 	public function addContent($db,$doc,$content) {
 		if(is_string($db) && is_string($doc) && is_array($content)) {
-			$bulkUsers = new MongoDB\Driver\BulkWrite(['ordered' => true]);
-			$bulkUsers->insert($content);
+			$bulk = new MongoDB\Driver\BulkWrite(['ordered' => true]);
+			$bulk->insert($content);
 
-			$this->manager->executeBulkWrite($db.'.'.$doc, $bulkUsers);
+			$this->manager->executeBulkWrite($db.'.'.$doc, $bulk);
 		}
 	}
 
@@ -106,10 +106,10 @@ class MongoInterface {
 	 */
 	public function removeContent($db,$doc,$filter) {
 		if(is_string($db) && is_string($doc) && is_array($filter)) {
-			$bulkUsers = new MongoDB\Driver\BulkWrite();
-			$bulkUsers->delete($filter);
+			$bulk = new MongoDB\Driver\BulkWrite();
+			$bulk->delete($filter);
 
-			$this->manager->executeBulkWrite($db.'.'.$doc, $bulkUsers);
+			$this->manager->executeBulkWrite($db.'.'.$doc, $bulk);
 		} 
 	}
 

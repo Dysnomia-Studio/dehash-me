@@ -5,7 +5,7 @@ abstract class System {
 	 *
 	 * @return     <type>  Number of core.
 	 */
-	static function countCore() {
+	public static function countCore() {
 	        if (!($num_cores = shell_exec('/bin/grep -c ^processor /proc/cpuinfo'))) {
 	            if (!($num_cores = trim(shell_exec('/usr/bin/nproc')))) {
 	                $num_cores = 1;
@@ -24,7 +24,7 @@ abstract class System {
 	 *
 	 * @return     array  stats
 	 */
-	static function CpuStats() {
+	public static function CpuStats() {
 		$cpu = array();
 		
 		//Nombre de Coeurs
@@ -73,8 +73,9 @@ abstract class System {
 		
 		// CPU Temp
 	    if (exec('/usr/bin/sensors | grep -E "^(CPU Temp|Core 0)" | cut -d \'+\' -f2 | cut -d \'.\' -f1', $t)) {
-	        if (isset($t[0]))
+	        if (isset($t[0])) {
 	            $cpu['temp'] = $t[0].' °C';
+	        }
 	    } else {
 	        if (exec('cat /sys/class/thermal/thermal_zone0/temp', $t)) {
 	            $cpu['temp'] = round($t[0] / 1000,1).' °C';
@@ -91,8 +92,7 @@ abstract class System {
 	 *
 	 * @return     array  stats
 	 */
-	static function SystemStats()
-	{
+	public static function SystemStats() {
 		$system = array();
 		$system['hostname'] = php_uname('n');
 		
@@ -125,7 +125,7 @@ abstract class System {
 	 *
 	 * @return     array  stats
 	 */
-	static function MemoryStats() {
+	public static function MemoryStats() {
 		$memory = array();
 		if (!($memory['total'] = (int)shell_exec('grep MemTotal /proc/meminfo | awk \'{print $2}\''))) {
 			$memory['total'] = 0;
@@ -155,7 +155,7 @@ abstract class System {
 	 *
 	 * @return     array  stats
 	 */
-	static function SwapStats() {
+	public static function SwapStats() {
 		$swap = array();
 		if (!($swap['total'] = (int) shell_exec('grep SwapTotal /proc/meminfo | awk \'{print $2}\''))) {
 			$swap['total'] = 0;
@@ -181,7 +181,7 @@ abstract class System {
 	 *
 	 * @return     array  usage
 	 */
-	static function DiskUsage() {
+	public static function DiskUsage() {
 		$disk = array();
 		$disk['free'] = disk_free_space ("/");
 		$disk['total'] = disk_total_space ("/");

@@ -7,7 +7,7 @@ abstract class Security {
 	 *
 	 * @return     string  Hashed text
 	 */
-	static function hashPassword($data, $hashType=-1) {
+	public static function hashPassword($data, $hashType=-1) {
 		$hashCount=1;
 		
 		if($hashType < 1 || $hashType > $hashCount) {
@@ -19,7 +19,7 @@ abstract class Security {
 		return Security::$hashType($data);
 	}
 
-	static function hashV1($data) {
+	public static function hashV1($data) {
 		$token = ***REMOVED***;
 		$part1 = ***REMOVED***;
 		$part2 = ***REMOVED***;

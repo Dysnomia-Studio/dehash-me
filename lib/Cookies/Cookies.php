@@ -3,7 +3,7 @@ abstract class Cookies {
 	/**
 	 * Draws a cookie prevention panel.
 	 */
-	static function drawPreventionPanel() {
+	public static function drawPreventionPanel() {
 		/* Get Vars from Config */
 		global $config;
 
@@ -13,7 +13,9 @@ abstract class Cookies {
 			</script>";
 		}
 
-		if((!isset($_COOKIE['cookies_accepted']) || $_COOKIE['cookies_accepted']!=1 ) && (!isset($_GET['cookies_accepted']) || $_GET['cookies_accepted']!=1 )) {
+		if((!isset($_COOKIE['cookies_accepted']) ||
+			$_COOKIE['cookies_accepted']!=1 ) &&
+			(!isset($_GET['cookies_accepted']) || $_GET['cookies_accepted']!=1 )) {
 
 			// Is the language module active ? If not, do its work ...
 			if(!class_exists('Language')) {
@@ -41,7 +43,7 @@ abstract class Cookies {
 				}
 				#cookie-prevent-close {
 					position: absolute;
-					left: 5px; 
+					left: 5px;
 					bottom: calc(50% - 0.5em);
 					cursor: pointer;
 				}

@@ -13,7 +13,7 @@ class Language {
 	/**
 	 * Constructor
 	 */
-	function __construct() {
+	public function __construct() {
 		global $config;
 
 		$this->languageList = $config["languageList"];
@@ -65,7 +65,7 @@ class Language {
 			} elseif(isset($_POST['langue']) && !empty($_POST['langue'])) {
 				$lang = $_POST['langue'];
 			} elseif(isset($_SESSION['lang']) && !empty($_SESSION['lang'])) {
-				$lang = $_SESSION['lang'];	
+				$lang = $_SESSION['lang'];
 			} else {
 				$lang = "";
 			}

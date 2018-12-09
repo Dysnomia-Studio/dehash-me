@@ -34,13 +34,11 @@
  * A ReCaptchaResponse is returned from checkAnswer().
  *
  **/
-class ReCaptchaResponse
-{
+class ReCaptchaResponse {
     public $success;
     public $errorCodes;
 }
-class ReCaptcha
-{
+class ReCaptcha {
     private static $_signupUrl = "https://www.google.com/recaptcha/admin";
     private static $_siteVerifyUrl =
         "https://www.google.com/recaptcha/api/siteverify?";
@@ -51,8 +49,7 @@ class ReCaptcha
      *
      * @param string $secret shared secret between site and ReCAPTCHA server.
      */
-    function _construct($secret)
-    {
+    public function _construct($secret) {
         if ($secret == null || $secret == "") {
             die("To use reCAPTCHA you must get an API key from <a href='"
                 . self::$_signupUrl . "'>" . self::$_signupUrl . "</a>");
@@ -66,8 +63,7 @@ class ReCaptcha
      *
      * @return string - encoded request.
      */
-    private function _encodeQS($data)
-    {
+    private function _encodeQS($data) {
         $req = "";
         foreach ($data as $key => $value) {
             $req .= $key . '=' . urlencode(stripslashes($value)) . '&';
@@ -83,8 +79,7 @@ class ReCaptcha
      *
      * @return array response
      */
-    private function _submitHTTPGet($path, $data)
-    {
+    private function _submitHTTPGet($path, $data) {
         $req = $this->_encodeQS($data);
         return file_get_contents($path . $req);
     }
@@ -97,8 +92,7 @@ class ReCaptcha
      *
      * @return ReCaptchaResponse
      */
-    public function verifyResponse($remoteIp, $response)
-    {
+    public function verifyResponse($remoteIp, $response) {
         // Discard empty solution submissions
         if ($response == null || strlen($response) == 0) {
             $recaptchaResponse = new ReCaptchaResponse();
@@ -131,7 +125,7 @@ class ReCaptcha
      *
      * @param      string  $publicKey  The public key
      */
-    static function DrawCaptcha($publicKey) {
+    public static function DrawCaptcha($publicKey) {
         echo'<script src="https://www.google.com/recaptcha/api.js"></script>
         <div class="g-recaptcha" data-sitekey="'.$publicKey.'"></div>';
     }

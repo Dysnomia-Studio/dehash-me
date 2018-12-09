@@ -6,10 +6,10 @@ abstract class File {
 	 * @param      array  $folderlist  Folder list
 	 * @param      array  $ext         Extension list
 	 *
-	 * @return     array   List of files (in 'files') and list 
+	 * @return     array   List of files (in 'files') and list
 	 * of folders (in 'folders')
 	 */
-	static function find($folderlist, $ext) {
+	public static function find($folderlist, $ext) {
 		$filelist = array();
 
 		//Variables de la boucle

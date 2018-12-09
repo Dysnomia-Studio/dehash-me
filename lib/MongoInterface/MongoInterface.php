@@ -1,4 +1,4 @@
-<?php 
+<?php
 /************************************************
 			      PHP MONGO LIB
 					BY ELANIS
@@ -13,10 +13,10 @@ class MongoInterface {
 	 * @param      string  $dbURL  The database url
 	 */
 	protected function connect($dbURL) {
-		global $config; 
+		global $config;
 
 		if(!isset($dbURL) || $dbURL=="") {
-			if(!isset($config['mongoURL']) || $config['mongoURL']=="") { 
+			if(!isset($config['mongoURL']) || $config['mongoURL']=="") {
 				die('DATABASE ERROR: All needed informations are not given !');
 			}
 
@@ -110,7 +110,7 @@ class MongoInterface {
 			$bulk->delete($filter);
 
 			$this->manager->executeBulkWrite($db.'.'.$doc, $bulk);
-		} 
+		}
 	}
 
 	/**
@@ -126,7 +126,7 @@ class MongoInterface {
 			$cmd = new MongoDB\Driver\Command(["count" => $collection, "query" => $query ]);
 			$result = $this->manager->executeCommand('***REMOVED***', $cmd);
 
-			return json_decode(json_encode($result->toArray()[0]), true)['n'];	
-		} 
+			return json_decode(json_encode($result->toArray()[0]), true)['n'];
+		}
 	}
 }

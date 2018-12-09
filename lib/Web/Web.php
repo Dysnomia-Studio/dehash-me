@@ -7,7 +7,7 @@ abstract class Web {
 	 *
 	 * @return     bool  online or not
 	 */
-	static function siteStatus($site) {
+	public static function siteStatus($site) {
 		return @fsockopen($site, 80, $errno, $errstr, 1);
 	}
 
@@ -19,7 +19,7 @@ abstract class Web {
 	 *
 	 * @return     bool    online or not
 	 */
-	static function serverStatus($server,$port) {
+	public static function serverStatus($server,$port) {
 		return (@fsockopen($server,$port, $errno, $errstr, 1));
 	}
 
@@ -28,7 +28,7 @@ abstract class Web {
 	 *
 	 * @return     integer  average ping
 	 */
-	static function averagePing() {
+	public static function averagePing() {
 		$hosts = array('google.com', 'wikipedia.org','twitter.com');
 		
 		$totalPing = 0;
@@ -50,7 +50,7 @@ abstract class Web {
 	 *
 	 * @return     array  data
 	 */
-	static function ipConfig() {
+	public static function ipConfig() {
 		$ipa = array();
 	    $ipa['lan']= $_SERVER['SERVER_ADDR'];
 	    $ipa['wan']= exec('curl http://ipecho.net/plain; echo');
@@ -63,7 +63,7 @@ abstract class Web {
 	 *
 	 * @return     string  The client ip.
 	 */
-	static function get_client_ip() {
+	public static function get_client_ip() {
 		$address = 'UNKNOWN IP';
 
 	    if (getenv('HTTP_CLIENT_IP')) {
@@ -91,13 +91,14 @@ abstract class Web {
 	 *
 	 * @return     string   ( description_of_the_return_value )
 	 */
-	static function full_url($s, $use_forwarded_host = false) {
-	    $ssl      = ( ! empty( $s['HTTPS'] ) && $s['HTTPS'] == 'on' );
-	    $sp       = strtolower( $s['SERVER_PROTOCOL'] );
-	    $protocol = substr( $sp, 0, strpos( $sp, '/' ) ) . ( ( $ssl ) ? 's' : '' );
+	public static function full_url($s, $use_forwarded_host = false) {
+	    $ssl      = (!empty($s['HTTPS']) && $s['HTTPS'] == 'on');
+	    $sp       = strtolower($s['SERVER_PROTOCOL']);
+	    $protocol = substr($sp, 0, strpos($sp,'/')) . (($ssl) ? 's' : '' );
 	    $port     = $s['SERVER_PORT'];
 	    $port     = ( ( ! $ssl && $port=='80' ) || ( $ssl && $port=='443' ) ) ? '' : ':'.$port;
-	    $host     = ( $use_forwarded_host && isset( $s['HTTP_X_FORWARDED_HOST'] ) ) ? $s['HTTP_X_FORWARDED_HOST'] : ( isset( $s['HTTP_HOST'] ) ? $s['HTTP_HOST'] : null );
+	    $host     = ( $use_forwarded_host && isset( $s['HTTP_X_FORWARDED_HOST'] ) ) ? $s['HTTP_X_FORWARDED_HOST'] : null;
+	    $host 	  = ( $host == null && isset( $s['HTTP_HOST'] ) ? $s['HTTP_HOST'] :$host );
 	    $host     = isset( $host ) ? $host : $s['SERVER_NAME'] . $port;
 	    return $protocol . '://' . $host . $s['REQUEST_URI'];
 	}

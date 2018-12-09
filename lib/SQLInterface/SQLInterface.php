@@ -1,4 +1,4 @@
-<?php 
+<?php
 /************************************************
 			       PHP SQL LIB
 					BY ELANIS
@@ -281,7 +281,7 @@ class SQLInterface {
 				$data = $query->fetchAll();
 				$query->CloseCursor();
 
-				return $data;	
+				return $data;
 			}
 		} else {
 			return false;

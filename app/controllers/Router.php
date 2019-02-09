@@ -30,7 +30,7 @@ class Router {
 
 	private function buildCacheName($page) {
 		foreach ($_GET as $key => $value) {
-			if($key == 'route' || $key=='' || $value=='') { continue; }
+			if($key == 'route' || $key=='' || $value=='' || is_array($value)) { continue; }
 
 			$key   = htmlentities(htmlspecialchars($key));
 			$value = htmlentities(htmlspecialchars($value));

@@ -1,6 +1,8 @@
 <?php
 abstract class Stats extends MongoInterface {
     public static function newVisit() {
+        $_SERVER['HTTP_USER_AGENT'] = (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : '';
+
         if(!isset($_SESSION['visited']) || $_SESSION['visited']!=$_SERVER['REQUEST_URI']) {
             $manager = new MongoDB\Driver\Manager(
                 '***REMOVED***');

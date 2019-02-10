@@ -16,9 +16,9 @@ class SQLInterface {
 	 * @param      string  $password  The password
 	 */
 	private function connect($host,$db,$id,$password,$port=3306) {
-		if($host=="") { $host="localhost"; }
+		if($host=='') { $host='localhost'; }
 
-		if($id==""||!isset($id)||$db==""||!isset($db)||$password==""||!isset($password)) { //Wrong Use !
+		if($id==''||!isset($id)||$db==''||!isset($db)||$password==''||!isset($password)) { //Wrong Use !
 			die('DATABASE ERROR: All needed informations are not given !');
 		}
 
@@ -52,7 +52,7 @@ class SQLInterface {
 	 *
 	 * @return     array           The content.
 	 */
-	public function getContent($table,$min=0,$size=1000000,$order="") {
+	public function getContent($table,$min=0,$size=1000000,$order='') {
 		if(is_string($table) && is_int($min)  && is_int($size) && is_string($order)) {
 
 			$query = $this->bd->prepare('SELECT * FROM '.$table.' ORDER BY '.$order.' LIMIT '.$min.', '.$size);
@@ -91,17 +91,14 @@ class SQLInterface {
 	 *
 	 * @return     array           The condition content.
 	 */
-	public function getCondContent($table,$where,$min=0,$size=1000000,$order="id") {
+	public function getCondContent($table,$where,$min=0,$size=1000000,$order='id') {
 		if(is_string($table) && is_array($where) && is_int($min)  && is_int($size) && is_string($order)) {
-			$where_cond = "";
+			$where_cond = '';
 
-			for($i=0; $i<sizeof($where); $i++) {
-				$where_cond .= 'LOWER('.$where[$i][0].') = :'.$where[$i][0];
-				if($i!=sizeof($where)-1) {
-					$where_cond .= ' AND '; //@ADD : OR/NOT/AND
-				}
+			foreach($where as $name => $value) {
+				if($where_cond != '') { $where_cond .= ' AND '; } //@ADD : OR/NOT/AND
+				$where_cond .= 'LOWER('.$name.') = :'.$name;
 			}
-
 
 			$query = $this->bd->prepare('SELECT * FROM '.$table.' WHERE '.$where_cond.' ORDER BY '.$order.' LIMIT '.$min.', '.$size);
 
@@ -127,21 +124,20 @@ class SQLInterface {
 	 */
 	public function addContent($table,$data) {
 
-			$content = "(";
+			$content = '(';
 
-			for($i=0; $i<sizeof($data); $i++) {
-				$content .= $data[$i][0];
-				if($i!=sizeof($data)-1) {
-					$content .= ', ';
-				}
+			foreach($data as $name => $value) {
+				if($content != '(') { $content .= ', '; }
+				$content .= $name;
 			}
+
 			$content .= ' ) VALUES ( ';
 
-			for($i=0; $i<sizeof($data); $i++) {
-				$content .= ':'.$data[$i][0];
-				if($i!=sizeof($data)-1) {
-					$content .= ', ';
-				}
+			$first = true;
+			foreach($data as $name => $value) {
+				if(!$first) { $content .= ', '; }
+				$content .= ':'.$name;
+				$first = false;
 			}
 
 			$content .= ' )';
@@ -164,20 +160,16 @@ class SQLInterface {
 	public function updateContent($table,$data,$where) {
 		if(is_string($table)&&is_array($data)&&is_array($where)) {
 
-			$where_cond = "";
-			for($i=0; $i<sizeof($where); $i++) {
-				$where_cond .= $where[$i][0].' = :'.$where[$i][0];
-				if($i!=sizeof($where)-1) {
-					$where_cond .= ' AND '; //@ADD : OR/NOT/AND
-				}
+			$where_cond = '';
+			foreach($where as $name => $value) {
+				if($where_cond != '') { $where_cond .= ' AND '; } //@ADD : OR/NOT/AND
+				$where_cond .= 'LOWER('.$name.') = :'.$name;
 			}
 
-			$set_cond = "";
-			for($i=0; $i<sizeof($data); $i++) {
-				$set_cond .= $data[$i][0].' = :'.$data[$i][0];
-				if($i!=sizeof($data)-1) {
-					$set_cond .= ', ';
-				}
+			$set_cond = '';
+			foreach($data as $name => $value) {
+				if($set_cond != '') { $set_cond .= ' AND '; } //@ADD : OR/NOT/AND
+				$set_cond .= 'LOWER('.$name.') = :'.$name;
 			}
 
 			$query = $this->bd->prepare('UPDATE '.$table.' SET '.$set_cond.' WHERE '.$where_cond);
@@ -199,12 +191,10 @@ class SQLInterface {
 	public function removeContent($table,$where) {
 		if(is_string($table)&&is_array($where)) {
 
-			$where_cond = "";
-			for($i=0; $i<sizeof($where); $i++) {
-				$where_cond .= $where[$i][0].' = :'.$where[$i][0];
-				if($i!=sizeof($where)-1) {
-					$where_cond .= ' AND '; //@ADD : OR/NOT/AND
-				}
+			$where_cond = '';
+			foreach($where as $name => $value) {
+				if($where_cond != '') { $where_cond .= ' AND '; } //@ADD : OR/NOT/AND
+				$where_cond .= 'LOWER('.$name.') = :'.$name;
 			}
 
 			$query = $this->bd->prepare('DELETE FROM '.$table.' WHERE '.$where_cond);
@@ -226,12 +216,12 @@ class SQLInterface {
 	 * @param      integer  $size    The size
 	 * @param      string   $order   The order
 	 */
-	public function drawTableByContent($header,$rows,$table,$min=0,$size=1000000,$order="") {
-		echo "<table><tr>";
+	public function drawTableByContent($header,$rows,$table,$min=0,$size=1000000,$order='') {
+		echo '<table><tr>';
 		for($i=0; $i<count($header); $i++) {
-			echo "<th>".$header[$i]."</th>";
+			echo '<th>'.$header[$i].'</th>';
 		}
-		echo "</tr>";
+		echo '</tr>';
 
 		foreach ($this->getContent($table,$min,$size,$order) as $data) {
 			echo '<tr>';
@@ -240,7 +230,7 @@ class SQLInterface {
 					echo $data[$rows[$i]];
 					echo '</td>';
 			}
-			echo "</tr>";
+			echo '</tr>';
 		}
 	}
 
@@ -252,7 +242,7 @@ class SQLInterface {
 	 * @return     integer          compte de lignes
 	 */
 	public function count($table) {
-		return $this->bd->query("SELECT COUNT(*) FROM ".$table)->fetchColumn();
+		return $this->bd->query('SELECT COUNT(*) FROM '.$table)->fetchColumn();
 	}
 
 	/**

@@ -15,7 +15,7 @@ class SQLInterface {
 	 * @param      string  $id        The username
 	 * @param      string  $password  The password
 	 */
-	private function connect($host,$db,$id,$password,$port=3306) {
+	private function connect($host,$db,$id,$password,$driver,$port) {
 		if($host=='') { $host='localhost'; }
 
 		if($id==''||!isset($id)||$db==''||!isset($db)||$password==''||!isset($password)) { //Wrong Use !
@@ -23,7 +23,7 @@ class SQLInterface {
 		}
 
 		try {
-			$this->bd = new PDO('mysql:host='.$host.';port='.$port.';dbname='.$db,$id,$password);
+			$this->bd = new PDO($driver.':host='.$host.';port='.$port.';dbname='.$db,$id,$password);
 		}
 		catch (Exception $e) {
 			die('Erreur : ' . $e->getMessage());
@@ -38,8 +38,8 @@ class SQLInterface {
 	 * @param      string  $id        The username
 	 * @param      string  $password  The password
 	 */
-	public function __construct($host,$db,$id,$password) {
-		$this->connect($host,$db,$id,$password); //Il faut se connecter à la BDD
+	public function __construct($host,$db,$id,$password,$driver='pgsql',$port=5432) {
+		$this->connect($host,$db,$id,$password,$driver,$port); //Il faut se connecter à la BDD
     }
 
 	/**
@@ -53,12 +53,12 @@ class SQLInterface {
 	 * @return     array           The content.
 	 */
 	public function getContent($table,$min=0,$size=1000000,$order='') {
-		if(is_string($table) && is_int($min)  && is_int($size) && is_string($order)) {
+		if(is_string($table) && is_int($min) && is_int($size) && is_string($order)) {
 
-			$query = $this->bd->prepare('SELECT * FROM '.$table.' ORDER BY '.$order.' LIMIT '.$min.', '.$size);
+			$query = $this->bd->prepare('SELECT * FROM '.$table.' ORDER BY '.$order.' OFFSET '.$min.' LIMIT '.$size);
 			$query->execute();
 
-			$data = $query->fetchAll();
+			$data = $query->fetchAll(PDO::FETCH_ASSOC);
 			$query->CloseCursor();
 
 			return $data;
@@ -97,7 +97,7 @@ class SQLInterface {
 
 			foreach($where as $name => $value) {
 				if($where_cond != '') { $where_cond .= ' AND '; } //@ADD : OR/NOT/AND
-				$where_cond .= 'LOWER('.$name.') = :'.$name;
+				$where_cond .= $name.' = :'.$name;
 			}
 
 			$query = $this->bd->prepare('SELECT * FROM '.$table.' WHERE '.$where_cond.' ORDER BY '.$order.' LIMIT '.$min.', '.$size);
@@ -163,13 +163,13 @@ class SQLInterface {
 			$where_cond = '';
 			foreach($where as $name => $value) {
 				if($where_cond != '') { $where_cond .= ' AND '; } //@ADD : OR/NOT/AND
-				$where_cond .= 'LOWER('.$name.') = :'.$name;
+				$where_cond .= $name.' = :'.$name;
 			}
 
 			$set_cond = '';
 			foreach($data as $name => $value) {
 				if($set_cond != '') { $set_cond .= ' AND '; } //@ADD : OR/NOT/AND
-				$set_cond .= 'LOWER('.$name.') = :'.$name;
+				$set_cond .= $name.' = :'.$name;
 			}
 
 			$query = $this->bd->prepare('UPDATE '.$table.' SET '.$set_cond.' WHERE '.$where_cond);
@@ -194,7 +194,7 @@ class SQLInterface {
 			$where_cond = '';
 			foreach($where as $name => $value) {
 				if($where_cond != '') { $where_cond .= ' AND '; } //@ADD : OR/NOT/AND
-				$where_cond .= 'LOWER('.$name.') = :'.$name;
+				$where_cond .= $name.' = :'.$name;
 			}
 
 			$query = $this->bd->prepare('DELETE FROM '.$table.' WHERE '.$where_cond);

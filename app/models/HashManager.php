@@ -1,7 +1,13 @@
 <?php
-class HashManager extends MongoInterface {
+class HashManager extends SQLInterface {
 	public function countHash() {
-		return $this->count("hashlists", []);
+		$queryResult = $this->selectQuery('SELECT reltuples::BIGINT AS approximate_row_count FROM pg_class WHERE relname = \'hashLists\'', []);
+
+		if($queryResult !== false && isset($queryResult[0]) && isset($queryResult[0][0])) {
+			return $queryResult[0][0];
+		} else {
+			return -1;
+		}
 	}
 
 	private function cmp($a, $b) {
@@ -26,9 +32,9 @@ class HashManager extends MongoInterface {
 
 	public function getByHash($hash) {
 		return $this->sort($this->getCondContent(
-			'***REMOVED***',
-			'hashlists',
-			["hash" => strtolower($hash)]));
+			'public."hashLists"',
+			["hash" => strtolower($hash)],
+			0, 10000, 'type'));
 	}
 
 	public function getByWord($word) {
@@ -39,9 +45,9 @@ class HashManager extends MongoInterface {
 
 		// Query and fetch already hashed data
 		$alreadyHashedRaw = $this->getCondContent(
-			'***REMOVED***',
-			'hashlists',
-			["text" => $word]); 
+			'public."hashLists"',
+			["text" => $word],
+			0, 10000, 'type');
 
 		foreach ($alreadyHashedRaw as $hash) {
 			$hash = (array) $hash;
@@ -54,8 +60,7 @@ class HashManager extends MongoInterface {
 		}
 
 		// Generate not already hashed data
-		$insertCount = 0;
-		$bulkHash = new MongoDB\Driver\BulkWrite(['ordered' => true]);
+		$insertData = [];
 
 		foreach($hashList as $hashType) {
 			if(!isset($alreadyHashed[$hashType])) {
@@ -67,8 +72,7 @@ class HashManager extends MongoInterface {
 					"hash" => $hashedText,
 				];
 
-				$insertCount++;
-				$bulkHash->insert($hash);
+				array_push($insertData, $hash);
 
 				// Text
 				array_push($drawHashes, [
@@ -79,8 +83,8 @@ class HashManager extends MongoInterface {
 		}
 
 		// Save it to database
-		if($insertCount > 0) {
-			$this->manager->executeBulkWrite('***REMOVED***.hashlists', $bulkHash);
+		if(count($insertData) > 0) {
+			$this->addContent('public."hashLists"', $insertData);
 		}
 
 		// Return hashes

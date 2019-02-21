@@ -8,18 +8,30 @@ class SQLInterface {
 	private $bd;
 
 	/**
-	 * Connect
+	 * constructor
 	 *
 	 * @param      string  $host      The host
 	 * @param      string  $db        The database
 	 * @param      string  $id        The username
 	 * @param      string  $password  The password
 	 */
-	private function connect($host,$db,$id,$password,$driver,$port) {
+	public function __construct($host='',$db='',$id='',$password='',$driver='pgsql',$port=5432) {
+
 		if($host=='') { $host='localhost'; }
 
-		if($id==''||!isset($id)||$db==''||!isset($db)||$password==''||!isset($password)) { //Wrong Use !
-			die('DATABASE ERROR: All needed informations are not given !');
+		if($id==''||$db==''||$password=='') { //Wrong Use !
+			global $config;
+
+			if(isset($config['SQLCredentials'])) {
+				$host 		= $config['SQLCredentials']['host'];
+				$db 		= $config['SQLCredentials']['db'];
+				$id 		= $config['SQLCredentials']['id'];
+				$password 	= $config['SQLCredentials']['password'];
+				$driver 	= $config['SQLCredentials']['driver'];
+				$port 		= $config['SQLCredentials']['port'];
+			} else {
+				die('DATABASE ERROR: All needed informations are not given !');
+			}
 		}
 
 		try {
@@ -28,18 +40,6 @@ class SQLInterface {
 		catch (Exception $e) {
 			die('Erreur : ' . $e->getMessage());
 		}
-	}
-
-	/**
-	 * constructor
-	 *
-	 * @param      string  $host      The host
-	 * @param      string  $db        The database
-	 * @param      string  $id        The username
-	 * @param      string  $password  The password
-	 */
-	public function __construct($host,$db,$id,$password,$driver='pgsql',$port=5432) {
-		$this->connect($host,$db,$id,$password,$driver,$port); //Il faut se connecter à la BDD
     }
 
 	/**
@@ -68,7 +68,7 @@ class SQLInterface {
 		}
 	}
 
-	private function bindValues($query, $bindValue) {
+	private function bindValues($query, $bindValue, $suffixe='') {
 		foreach($bindValue as $name => $value) {
 			if(is_int($value) || is_bool($value)) {
 				$pdoType = PDO::PARAM_INT;
@@ -76,7 +76,7 @@ class SQLInterface {
 				$pdoType = PDO::PARAM_STR;
 			}
 
-			$query->bindValue(':'.$name, $value, $pdoType);
+			$query->bindValue((':'.$name.$suffixe), $value, $pdoType);
 		}
 	}
 
@@ -100,7 +100,7 @@ class SQLInterface {
 				$where_cond .= $name.' = :'.$name;
 			}
 
-			$query = $this->bd->prepare('SELECT * FROM '.$table.' WHERE '.$where_cond.' ORDER BY '.$order.' LIMIT '.$min.', '.$size);
+			$query = $this->bd->prepare('SELECT * FROM '.$table.' WHERE '.$where_cond.' ORDER BY '.$order.' OFFSET '.$min.' LIMIT '.$size);
 
 			$this->bindValues($query, $where);
 
@@ -123,31 +123,52 @@ class SQLInterface {
 	 * @param      array   $data   The data
 	 */
 	public function addContent($table,$data) {
+		if(!is_string($table) ||
+			!is_array($data) ||
+			count($data) < 1) {
 
-			$content = '(';
+			return;
+		}
 
-			foreach($data as $name => $value) {
-				if($content != '(') { $content .= ', '; }
-				$content .= $name;
+
+		$content = ' (';
+
+		foreach($data[0] as $name => $value) {
+			if($content != ' (') { $content .= ', '; }
+			$content .= $name;
+		}
+
+		$content .= ' ) VALUES ';
+
+		$firstRow = true;
+		for($i=0; $i<count($data); $i++) {
+			if(!$firstRow) { 
+				$content .= ', ';
 			}
+			$firstRow = false;
 
-			$content .= ' ) VALUES ( ';
+			$content .= '( ';
 
-			$first = true;
-			foreach($data as $name => $value) {
-				if(!$first) { $content .= ', '; }
-				$content .= ':'.$name;
-				$first = false;
+			$firstCol = true;
+			foreach($data[$i] as $name => $value) {
+				if(!$firstCol) {
+					$content .= ', '; 
+				}
+				$firstCol = false;
+
+				$content .= ':'.$name.'_'.$i;
 			}
-
 			$content .= ' )';
+		}
 
-			$query = $this->bd->prepare('INSERT INTO '.$table.$content);
+		$query = $this->bd->prepare('INSERT INTO '.$table.$content);
 
-			$this->bindValues($query, $data);
+		for($i=0; $i<count($data); $i++) {
+			$this->bindValues($query, $data[$i], '_'.$i);
+		}
 
-			$query->execute();
-			$query->CloseCursor();
+		$query->execute();
+		$query->CloseCursor();
 	}
 
 	/**
@@ -242,7 +263,13 @@ class SQLInterface {
 	 * @return     integer          compte de lignes
 	 */
 	public function count($table) {
-		return $this->bd->query('SELECT COUNT(*) FROM '.$table)->fetchColumn();
+		$queryResult = $this->bd->query('SELECT COUNT(*) FROM "'.$table.'"');
+
+		if($queryResult !== false) {
+			return $queryResult->fetchColumn();
+		} else {
+			return -1;
+		}
 	}
 
 	/**

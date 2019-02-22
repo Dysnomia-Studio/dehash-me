@@ -33,8 +33,7 @@ class HashManager extends SQLInterface {
 	public function getByHash($hash) {
 		return $this->sort($this->getCondContent(
 			'public."hashLists"',
-			["hash" => strtolower($hash)],
-			0, 10000, 'type'));
+			["hash" => strtolower($hash)]));
 	}
 
 	public function getByWord($word) {
@@ -46,8 +45,7 @@ class HashManager extends SQLInterface {
 		// Query and fetch already hashed data
 		$alreadyHashedRaw = $this->getCondContent(
 			'public."hashLists"',
-			["text" => $word],
-			0, 10000, 'type');
+			["text" => $word]);
 
 		foreach ($alreadyHashedRaw as $hash) {
 			$hash = (array) $hash;

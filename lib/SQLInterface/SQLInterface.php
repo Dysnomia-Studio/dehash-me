@@ -91,7 +91,7 @@ class SQLInterface {
 	 *
 	 * @return     array           The condition content.
 	 */
-	public function getCondContent($table,$where,$min=0,$size=1000000,$order='id') {
+	public function getCondContent($table,$where,$min=0,$size=1000000,$order='') {
 		if(is_string($table) && is_array($where) && is_int($min)  && is_int($size) && is_string($order)) {
 			$where_cond = '';
 
@@ -100,7 +100,11 @@ class SQLInterface {
 				$where_cond .= $name.' = :'.$name;
 			}
 
-			$query = $this->bd->prepare('SELECT * FROM '.$table.' WHERE '.$where_cond.' ORDER BY '.$order.' OFFSET '.$min.' LIMIT '.$size);
+			if($order != '') {
+				$order = ' ORDER BY '.$order;
+			}
+
+			$query = $this->bd->prepare('SELECT * FROM '.$table.' WHERE '.$where_cond.$order.' OFFSET '.$min.' LIMIT '.$size);
 
 			$this->bindValues($query, $where);
 

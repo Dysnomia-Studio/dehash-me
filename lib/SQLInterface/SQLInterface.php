@@ -121,6 +121,48 @@ class SQLInterface {
 	}
 
 	/**
+	 * Gets content of a table depends on specified conditions.
+	 *
+	 * @param      array           $table  The table name
+	 * @param      array           $where  The condition
+	 * @param      integer		   $min    The minimum index
+	 * @param      integer         $size   The size
+	 * @param      string          $order  The order type
+	 *
+	 * @return     array           The condition content.
+	 */
+	public function getILIKECondContent($table,$where,$min=0,$size=1000000,$order='') {
+		if(is_string($table) && is_array($where) && is_int($min)  && is_int($size) && is_string($order)) {
+			$where_cond = '';
+
+			foreach($where as $name => $value) {
+				if($where_cond != '') { $where_cond .= ' AND '; } //@ADD : OR/NOT/AND
+				$where_cond .= $name.' ILIKE :'.$name;
+
+				$where[$name] = "%".$value."%";
+			}
+
+			if($order != '') {
+				$order = ' ORDER BY '.$order;
+			}
+
+			$query = $this->bd->prepare('SELECT * FROM '.$table.' WHERE '.$where_cond.$order.' OFFSET '.$min.' LIMIT '.$size);
+
+			$this->bindValues($query, $where);
+
+			$query->execute();
+
+			$data = $query->fetchAll();
+			$query->CloseCursor();
+
+			return $data;
+		}
+		else {
+			return [];
+		}
+	}
+
+	/**
 	 * Adds a content into database
 	 *
 	 * @param      string  $table  The table

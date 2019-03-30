@@ -181,7 +181,7 @@ class SQLInterface {
 
 		foreach($data[0] as $name => $value) {
 			if($content != ' (') { $content .= ', '; }
-			$content .= $name;
+			$content .= '"'.$name.'"';
 		}
 
 		$content .= ' ) VALUES ';
@@ -207,7 +207,7 @@ class SQLInterface {
 			$content .= ' )';
 		}
 
-		$query = $this->bd->prepare('INSERT INTO '.$table.$content);
+		$query = $this->bd->prepare('INSERT INTO "'.$table.'"'.$content);
 
 		for($i=0; $i<count($data); $i++) {
 			$this->bindValues($query, $data[$i], '_'.$i);

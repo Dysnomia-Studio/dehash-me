@@ -9,6 +9,8 @@ class Router {
 	}
 
 	public function get($pagename) {
+		Stats::newVisit(); // Save to analytics
+
 		// Default values
 		$data = array();
 		$data['writeCache'] = false;

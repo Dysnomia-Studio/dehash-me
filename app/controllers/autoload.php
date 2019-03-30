@@ -4,11 +4,11 @@
  */
 spl_autoload_register(function($class){
 	$class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
-	
+
 	$paths = array(
-		DIR_CTRL,
 		DIR_LIB,
-		DIR_MODEL
+		DIR_MODEL,
+		DIR_CTRL,
 	);
 	
 	foreach($paths as $path) {

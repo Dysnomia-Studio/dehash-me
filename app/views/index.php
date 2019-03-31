@@ -29,7 +29,7 @@
 			<input type="submit" id="dehash-button" name="dehash-button" value="Dehash me !" />
 		</div>
 	</form>
-	<div class="ad">
+	<div class="beforeResult">
 		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 		<!-- Dehash.me - Responsive -->
 		<ins class="adsbygoogle"
@@ -39,6 +39,21 @@
 		     data-ad-format="auto"></ins>
 		<script>
 		(adsbygoogle = window.adsbygoogle || []).push({});
+		</script>
+
+		<div id="disclaimerMessage" class="disclaimerMessage">
+			Hey you !<br/>
+			Can you disable you adblocker please ?<br/>
+			This is our only way to finance this website, we promise we won't display more than one ad per page :)<br/>
+			Thanks and have fun with our tool !
+		</div>
+
+		<script type="text/javascript">
+			window.addEventListener('load', () => {
+				if(window.getComputedStyle(document.getElementsByClassName('beforeResult')[0]).height.charAt(0) === '0') {
+					document.getElementById('disclaimerMessage').style.display = 'block';
+				}
+			});
 		</script>
 	</div>
 

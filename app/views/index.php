@@ -18,7 +18,7 @@
 		This website was created to raise awareness on basic hashing weaknesses. This website own and generate its own dictionary. Some tips to developers if you don't want critical data being revealed (and/or dehashed):<br/><br/>
 		1) Hash your critical data (like passwords), and all data needed to check forms and not needed as is.<br/>
 		2) Use multiple and strong hashes (like whirlpool, bcrypt or argon2)<br/>
-		3) Salt your hashes with long and alphanumericals "words", you can generate your salt by hashing the username for example.<br/>
+		3) Salt your hashes with long and alphanumericals "words", you can generate your salt by hashing multiple times the timestamp of account creation with username for example (but keep the recipe secret !).<br/>
 		<br/><br/>
 		<b><u>Warning:</u></b> Do not use this website in illegal or millitary purposes. We are not responsible of bad (or illegal) usage of this tool.<br/>
 	</section>

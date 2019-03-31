@@ -123,11 +123,11 @@ Created by <a href="https://dysnomia.studio" target="_blank">Dysnomia</a> - Copy
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#count').on('load', function() {
-			var countHash = parseInt($("#count").contents().find("body").text());
+			let countHash = parseInt($('#count').contents().find('body').text());
 			if(isNaN(countHash)) { return; }
-			countHash = "" + countHash;
-			var text = [];
-			var i = countHash.length;
+			countHash = '' + countHash;
+			const text = [];
+			let i = countHash.length;
 			while(i>2) {
 				i -= 3;
 				text.unshift(countHash.slice(i));
@@ -135,7 +135,7 @@ Created by <a href="https://dysnomia.studio" target="_blank">Dysnomia</a> - Copy
 			}
 			text.unshift(countHash);
 
-			$('#hashCount').text(text);
+			$('#hashCount').text(text.filter((d) => d != ''));
 		});
 		$('#count').attr('src', function ( i, val ) { return val; });
 	});

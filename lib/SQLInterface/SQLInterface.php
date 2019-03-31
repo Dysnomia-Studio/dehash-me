@@ -55,7 +55,7 @@ class SQLInterface {
 	public function getContent($table,$min=0,$size=1000000,$order='') {
 		if(is_string($table) && is_int($min) && is_int($size) && is_string($order)) {
 
-			$query = $this->bd->prepare('SELECT * FROM '.$table.' ORDER BY '.$order.' OFFSET '.$min.' LIMIT '.$size);
+			$query = $this->bd->prepare('SELECT * FROM "'.$table.'" ORDER BY '.$order.' OFFSET '.$min.' LIMIT '.$size);
 			$query->execute();
 
 			$data = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -70,7 +70,7 @@ class SQLInterface {
 
 	private function bindValues($query, $bindValue, $suffixe='') {
 		foreach($bindValue as $name => $value) {
-			if(is_int($value) || is_bool($value)) {
+			if(is_int($value)) {
 				$pdoType = PDO::PARAM_INT;
 			} else {
 				$pdoType = PDO::PARAM_STR;
@@ -97,14 +97,14 @@ class SQLInterface {
 
 			foreach($where as $name => $value) {
 				if($where_cond != '') { $where_cond .= ' AND '; } //@ADD : OR/NOT/AND
-				$where_cond .= $name.' = :'.$name;
+				$where_cond .= '"'.$name.'" = :'.$name;
 			}
 
 			if($order != '') {
 				$order = ' ORDER BY '.$order;
 			}
 
-			$query = $this->bd->prepare('SELECT * FROM '.$table.' WHERE '.$where_cond.$order.' OFFSET '.$min.' LIMIT '.$size);
+			$query = $this->bd->prepare('SELECT * FROM "'.$table.'" WHERE '.$where_cond.$order.' OFFSET '.$min.' LIMIT '.$size);
 
 			$this->bindValues($query, $where);
 
@@ -146,7 +146,7 @@ class SQLInterface {
 				$order = ' ORDER BY '.$order;
 			}
 
-			$query = $this->bd->prepare('SELECT * FROM '.$table.' WHERE '.$where_cond.$order.' OFFSET '.$min.' LIMIT '.$size);
+			$query = $this->bd->prepare('SELECT * FROM "'.$table.'" WHERE '.$where_cond.$order.' OFFSET '.$min.' LIMIT '.$size);
 
 			$this->bindValues($query, $where);
 
@@ -239,7 +239,7 @@ class SQLInterface {
 				$set_cond .= $name.' = :'.$name;
 			}
 
-			$query = $this->bd->prepare('UPDATE '.$table.' SET '.$set_cond.' WHERE '.$where_cond);
+			$query = $this->bd->prepare('UPDATE "'.$table.'" SET '.$set_cond.' WHERE '.$where_cond);
 
 			$this->bindValues($query, $data);
 			$this->bindValues($query, $where);
@@ -328,7 +328,7 @@ class SQLInterface {
 	 * @return     array|boolean  ( description_of_the_return_value )
 	 */
 	public function selectQuery($query,$bindValue,$oneResult=false) {
-		if(is_string($query)&&is_array($bindValue)&&is_bool($oneResult)) {
+		if(is_string($query) && is_array($bindValue) && is_bool($oneResult)) {
 			$query = $this->bd->prepare($query);
 
 			$this->bindValues($query, $bindValue);
@@ -358,7 +358,7 @@ class SQLInterface {
 	 * @param      <type>  $bindValue  The binded value
 	 */
 	public function updateQuery($query,$bindValue) {
-		if(is_string($query)&&is_array($bindValue)) {
+		if(is_string($query) && is_array($bindValue)) {
 
 			$query = $this->bd->prepare($query);
 

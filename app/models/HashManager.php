@@ -32,7 +32,7 @@ class HashManager extends SQLInterface {
 
 	public function getByHash($hash) {
 		return $this->sort($this->getCondContent(
-			'public."hashLists"',
+			'hashLists',
 			["hash" => strtolower($hash)]));
 	}
 
@@ -44,7 +44,7 @@ class HashManager extends SQLInterface {
 
 		// Query and fetch already hashed data
 		$alreadyHashedRaw = $this->getCondContent(
-			'public."hashLists"',
+			'hashLists',
 			["text" => $word]);
 
 		foreach ($alreadyHashedRaw as $hash) {
@@ -82,7 +82,7 @@ class HashManager extends SQLInterface {
 
 		// Save it to database
 		if(count($insertData) > 0) {
-			$this->addContent('public."hashLists"', $insertData);
+			$this->addContent('hashLists', [$insertData]);
 		}
 
 		// Return hashes

@@ -82,7 +82,7 @@ class HashManager extends SQLInterface {
 
 		// Save it to database
 		if(count($insertData) > 0) {
-			$this->addContent('hashLists', [$insertData]);
+			$this->addContent('hashLists', $insertData);
 		}
 
 		// Return hashes

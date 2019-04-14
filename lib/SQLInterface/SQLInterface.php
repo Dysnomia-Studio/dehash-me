@@ -55,7 +55,11 @@ class SQLInterface {
 	public function getContent($table,$min=0,$size=1000000,$order='') {
 		if(is_string($table) && is_int($min) && is_int($size) && is_string($order)) {
 
-			$query = $this->bd->prepare('SELECT * FROM "'.$table.'" ORDER BY '.$order.' OFFSET '.$min.' LIMIT '.$size);
+			if($order != '') {
+				$order = ' ORDER BY '.$order;
+			}
+
+			$query = $this->bd->prepare('SELECT * FROM "'.$table.'"'.$order.' OFFSET '.$min.' LIMIT '.$size);
 			$query->execute();
 
 			$data = $query->fetchAll(PDO::FETCH_ASSOC);

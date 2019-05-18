@@ -45,12 +45,8 @@ class Language {
 	/**
 	 * Sets the language.
 	 */
-	public function setLanguage() {
-		$lang = "";
-		// Get
-		if(isset($_GET["lang"])) {
-			$lang = $_GET["lang"];
-		}
+	public function setLanguage($lang = "") {
+		// Args
 		$find = array_search($lang, $this->languageList);
 		if(!$find) {
 			if(isset($this->languageList[$lang])) {
@@ -58,6 +54,20 @@ class Language {
 			}
 			$find = array_search($lang, $this->languageList);
 		}
+
+		// GET
+		if(!$find && isset($_GET["lang"])) {
+			$lang = $_GET["lang"];
+
+			$find = array_search($lang, $this->languageList);
+			if(!$find) {
+				if(isset($this->languageList[$lang])) {
+					$lang = $this->languageList[$lang];
+				}
+				$find = array_search($lang, $this->languageList);
+			}
+		}
+
 		// POST / SESSION
 		if(!$find) {
 			if(isset($_POST['selected-language']) && !empty($_POST['selected-language'])) {

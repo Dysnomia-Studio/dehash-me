@@ -13,7 +13,7 @@ class Language {
 	/**
 	 * Constructor
 	 */
-	public function __construct() {
+	public function __construct($lang = "") {
 		global $config;
 
 		$this->languageList = $config["languageList"];
@@ -26,7 +26,7 @@ class Language {
 		}
 
 		$this->setDefaultLanguage();
-		$this->setLanguage();
+		$this->setLanguage($lang);
 		$this->importLanguageFiles();
 	}
 	/**

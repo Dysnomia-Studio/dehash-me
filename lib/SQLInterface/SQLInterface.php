@@ -243,8 +243,6 @@ class SQLInterface {
 				$setString .= $name.' = :'.$name;
 			}
 
-			var_dump('UPDATE "'.$table.'" SET '.$setString.' WHERE '.$where_cond);
-
 			$query = $this->bd->prepare('UPDATE "'.$table.'" SET '.$setString.' WHERE '.$where_cond);
 
 			$this->bindValues($query, $data);

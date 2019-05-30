@@ -237,13 +237,15 @@ class SQLInterface {
 				$where_cond .= $name.' = :'.$name;
 			}
 
-			$set_cond = '';
+			$setString = '';
 			foreach($data as $name => $value) {
-				if($set_cond != '') { $set_cond .= ' AND '; } //@ADD : OR/NOT/AND
-				$set_cond .= $name.' = :'.$name;
+				if($setString != '') { $setString .= ' , '; }
+				$setString .= $name.' = :'.$name;
 			}
 
-			$query = $this->bd->prepare('UPDATE "'.$table.'" SET '.$set_cond.' WHERE '.$where_cond);
+			var_dump('UPDATE "'.$table.'" SET '.$setString.' WHERE '.$where_cond);
+
+			$query = $this->bd->prepare('UPDATE "'.$table.'" SET '.$setString.' WHERE '.$where_cond);
 
 			$this->bindValues($query, $data);
 			$this->bindValues($query, $where);

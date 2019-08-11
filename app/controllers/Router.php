@@ -9,6 +9,12 @@ class Router {
 	}
 
 	public function get($pagename) {
+		$pagename = trim($pagename);
+
+		if($pagename == '' || $pagename == '.php') {
+			$pagename = 'index';
+		}
+
 		Stats::newVisit(); // Save to analytics
 
 		// Default values
@@ -39,6 +45,9 @@ class Router {
 
 			$page.= '_'.$key.'-'.$value;
 		}
+
+		str_replace('/', '_', $page);
+		str_replace('\\', '_', $page);
 
 		return DIR_CACHE.$page.'.html';
 	}

@@ -46,8 +46,8 @@ class Router {
 			$page.= '_'.$key.'-'.$value;
 		}
 
-		str_replace('/', '_', $page);
-		str_replace('\\', '_', $page);
+		$page = str_replace('/', '_', $page);
+		$page = str_replace('\\', '_', $page);
 
 		return DIR_CACHE.$page.'.html';
 	}

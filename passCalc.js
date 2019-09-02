@@ -3,7 +3,18 @@ const crypto = require('crypto');
 const { Pool } = require('pg');
 let pool;
 
-const hashTypeList = ["md4", "md5", "mdc2", "ripemd", "ripemd160", "rmd160", "sha1", "sha224", "sha256", "sha384", "sha512", "whirlpool"];
+const hashTypeList = [
+	'blake2b512', 'blake2s256',
+	'md4', 'md5',
+	'mdc2',
+	'ripemd', 'ripemd160', 'rmd160',
+	'sha1', 'sha224', 'sha256', 'sha384', 'sha512', 'sha512-224', 'sha512-256',
+	'sha3-224', 'sha3-256', 'sha3-384', 'sha3-512',
+	'shake128', 'shake256',
+	'sm3',
+	'whirlpool'
+];
+
 /* Available: ( require('crypto').getHashes() )
 [ 'RSA-MD4',
   'RSA-MD5',
@@ -13,10 +24,21 @@ const hashTypeList = ["md4", "md5", "mdc2", "ripemd", "ripemd160", "rmd160", "sh
   'RSA-SHA1-2',
   'RSA-SHA224',
   'RSA-SHA256',
+  'RSA-SHA3-224',
+  'RSA-SHA3-256',
+  'RSA-SHA3-384',
+  'RSA-SHA3-512',
   'RSA-SHA384',
   'RSA-SHA512',
+  'RSA-SHA512/224',
+  'RSA-SHA512/256',
+  'RSA-SM3',
   'blake2b512',
   'blake2s256',
+  'id-rsassa-pkcs1-v1_5-with-sha3-224',
+  'id-rsassa-pkcs1-v1_5-with-sha3-256',
+  'id-rsassa-pkcs1-v1_5-with-sha3-384',
+  'id-rsassa-pkcs1-v1_5-with-sha3-512',
   'md4',
   'md4WithRSAEncryption',
   'md5',
@@ -34,10 +56,22 @@ const hashTypeList = ["md4", "md5", "mdc2", "ripemd", "ripemd160", "rmd160", "sh
   'sha224WithRSAEncryption',
   'sha256',
   'sha256WithRSAEncryption',
+  'sha3-224',
+  'sha3-256',
+  'sha3-384',
+  'sha3-512',
   'sha384',
   'sha384WithRSAEncryption',
   'sha512',
+  'sha512-224',
+  'sha512-224WithRSAEncryption',
+  'sha512-256',
+  'sha512-256WithRSAEncryption',
   'sha512WithRSAEncryption',
+  'shake128',
+  'shake256',
+  'sm3',
+  'sm3WithRSAEncryption',
   'ssl3-md5',
   'ssl3-sha1',
   'whirlpool' ]

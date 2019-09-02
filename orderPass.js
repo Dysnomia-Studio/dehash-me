@@ -2,9 +2,9 @@ require('./passCalc')();
 
 function orderPass(current) {
 	let i = 0;
-	while(current[i] != undefined) {
+	while(current[i] !== undefined) {
 		if(current[i]>93) {
-			if(current[i+1]==undefined) {
+			if(current[i+1]===undefined) {
 				current[i+1] = -1;
 			}
 			current[i+1]++;
@@ -14,13 +14,13 @@ function orderPass(current) {
 		i++;
 	}
 
-	let text = "";
+	let text = '';
 	for(let i=0; i<current.length; i++) {
 		text += String.fromCharCode(33 + current[i]);
 	}
 
-	if(current[0] == 0) {
-		console.log("*********** " + current.join('-') + " ***********");
+	if(current[0] === 0) {
+		console.log('*********** ' + current.join('-') + ' ***********');
 	}
 
 	calcAndSaveHash(text, function() {
@@ -31,5 +31,5 @@ function orderPass(current) {
 }
 
 connectDb(function() {
-	orderPass([0, 74, 26, 0]);
+	orderPass([0]);
 });

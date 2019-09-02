@@ -2,7 +2,7 @@ require('./passCalc')();
 
 let j = 1,
 	m = 1,
-	y = 1915,
+	y = 1900,
 	total = false;
 
 function birthPass() {

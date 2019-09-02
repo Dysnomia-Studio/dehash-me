@@ -2,12 +2,12 @@ require('./passCalc')();
 
 const passes = [];
 
-const countBase = 7000;
+const countBase = 0;
 let count = countBase;
 
 connectDb(function() {
 	const lineReader = require('readline').createInterface({
-		input: require('fs').createReadStream('10_million_password_list_top_100000.txt')
+		input: require('fs').createReadStream('words.txt')
 	});
 
 	lineReader.on('line', function(line) {
@@ -27,7 +27,7 @@ connectDb(function() {
 
 		calcAndSaveHash(passes[countBase], function() {
 			if(++count % 100 === 0) {
-				console.log('************** Hashed " + count + " passes **************');
+				console.log('************** Hashed ' + count + ' passes **************');
 			}
 
 			passes.splice(0,1);

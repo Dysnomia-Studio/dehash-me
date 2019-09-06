@@ -14,7 +14,7 @@ class Stats extends SQLInterface {
     public static function newVisit() {
         $_SERVER['HTTP_USER_AGENT'] = (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : '';
 
-        if(true || !isset($_SESSION['visited']) || $_SESSION['visited']!=$_SERVER['REQUEST_URI']) {
+        if(!isset($_SESSION['visited']) || $_SESSION['visited']!=$_SERVER['REQUEST_URI']) {
             $visit = [];
             if(strstr(strtolower($_SERVER['HTTP_USER_AGENT']), 'googlebot')) {
                 $visit['userAgent'] = 'Google Bot';

@@ -191,7 +191,7 @@ class SQLInterface {
 
 		$firstRow = true;
 		for($i=0; $i<count($data); $i++) {
-			if(!$firstRow) { 
+			if(!$firstRow) {
 				$content .= ', ';
 			}
 			$firstRow = false;
@@ -201,7 +201,7 @@ class SQLInterface {
 			$firstCol = true;
 			foreach($data[$i] as $name => $value) {
 				if(!$firstCol) {
-					$content .= ', '; 
+					$content .= ', ';
 				}
 				$firstCol = false;
 

@@ -1,13 +1,13 @@
 window.addEventListener('load', function() {
-	var hamburger = document.getElementById("hamburger");
-	var menu = document.getElementById("menu");
+	const hamburger = document.getElementById('hamburger');
+	const menu = document.getElementById('menu');
 
-	var boutonsMenu = document.getElementsByClassName('menuAncre');
-	for(var i = 0; i < boutonsMenu.length; i++) {
-	    var bouton = boutonsMenu[i];
-	    bouton.onclick = function() {
-	        CloseMenu();
-	    }
+	const boutonsMenu = document.getElementsByClassName('menuAncre');
+	for(let i = 0; i < boutonsMenu.length; i++) {
+		const bouton = boutonsMenu[i];
+		bouton.onclick = function() {
+			CloseMenu();
+		};
 	}
 
 	hamburger.addEventListener('click', function() {

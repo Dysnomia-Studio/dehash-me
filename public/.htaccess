@@ -5,9 +5,9 @@ RewriteRule ^(.*)$ index.php?route=$1 [QSA,L]
 
 # Client Cache
 <ifmodule mod_expires.c>
-	<Filesmatch "\.(jpg|jpeg|png|gif|js|css|swf|ico|woff|mp3)$">
+	<Filesmatch "\.(jpg|jpeg|png|gif|js|css|swf|ico|woff|mp3|txt)$">
 	    ExpiresActive on
-	    ExpiresDefault "access plus 0 seconds"
+	    ExpiresDefault "access plus 1 week"
 	</Filesmatch>
 </ifmodule>
 

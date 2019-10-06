@@ -1,11 +1,11 @@
 RewriteEngine On
 
-RewriteCond %{REQUEST_FILENAME} !(.*)\.(css|jpg|png|gif|svg|js|ttf|ico|mp3|map|xml)$
+RewriteCond %{REQUEST_FILENAME} !(.*)\.(css|jpg|png|gif|svg|js|ttf|ico|mp3|map|xml|txt)$
 RewriteRule ^(.*)$ index.php?route=$1 [QSA,L]
 
 # Client Cache
 <ifmodule mod_expires.c>
-	<Filesmatch "\.(jpg|jpeg|png|gif|js|css|swf|ico|woff|mp3|txt)$">
+	<Filesmatch "\.(jpg|jpeg|png|gif|js|css|swf|ico|woff|mp3)$">
 	    ExpiresActive on
 	    ExpiresDefault "access plus 1 week"
 	</Filesmatch>

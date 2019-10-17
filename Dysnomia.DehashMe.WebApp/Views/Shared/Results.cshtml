@@ -1,0 +1,21 @@
+﻿@{
+    var results = (Dictionary<string, string>)ViewData["Result"];
+}
+
+@if (results.Count() == 0) {
+    <div style="text-align: center;">No results found in database.</div>
+} else {
+    <div style="text-align: center;">
+        <h3>Results</h3>
+    </div>
+    <table class="hash-results">
+        <tr><th>@ViewData["Result_Head"]</th><th>Hash Algorithm</th></tr>
+
+        @foreach (var result in results) {
+            <tr>
+                <td>@result.Value</td>
+                <td>@result.Key</td>
+            </tr>
+        }
+    </table>
+}

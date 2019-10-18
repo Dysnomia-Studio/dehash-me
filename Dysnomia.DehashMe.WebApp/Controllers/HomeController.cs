@@ -1,9 +1,11 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 using Dysnomia.DehashMe.Business;
 using Dysnomia.DehashMe.WebApp.Models;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dysnomia.DehashMe.WebApp.Controllers {
@@ -14,9 +16,32 @@ namespace Dysnomia.DehashMe.WebApp.Controllers {
 			this.hashService = hashService;
 		}
 
+		public string GetIp() {
+			return HttpContext.Connection.RemoteIpAddress.ToString();
+		}
+
+		public void SetSessionsVars() {
+			HttpContext.Session.SetString("Ip", GetIp());
+			HttpContext.Session.SetString("Time", DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString());
+		}
+
+		public bool IsBot() {
+			if (HttpContext.Session.GetString("Time") == null) { return true; }
+
+			var time = DateTime.Parse(
+				HttpContext.Session.GetString("Time")
+			);
+			time.AddSeconds(2);
+
+			return HttpContext.Session.GetString("Ip") != GetIp() ||
+				(time < DateTime.Now);
+		}
+
 		[HttpGet]
 		[Route("/")]
 		public IActionResult Index() {
+			SetSessionsVars();
+
 			return View();
 		}
 
@@ -25,9 +50,7 @@ namespace Dysnomia.DehashMe.WebApp.Controllers {
 		public async Task<IActionResult> Index(string hash, string dehash, string searchText) {
 			ViewData["Result"] = null;
 
-			// TODO: anti-bot system
-
-			if (!string.IsNullOrWhiteSpace(searchText)) {
+			if (IsBot() || !string.IsNullOrWhiteSpace(searchText)) {
 				ViewData["SearchText"] = searchText;
 
 				if (hash != null) {
@@ -40,6 +63,8 @@ namespace Dysnomia.DehashMe.WebApp.Controllers {
 					ViewData["Result"] = await hashService.SearchByHash(searchText.ToLower());
 				}
 			}
+
+			SetSessionsVars();
 
 			return View();
 		}

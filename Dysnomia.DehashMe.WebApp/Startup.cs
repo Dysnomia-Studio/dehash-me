@@ -1,12 +1,12 @@
+using Dysnomia.DehashMe.Business;
+using Dysnomia.DehashMe.Common;
+using Dysnomia.DehashMe.DataAccess;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
-using Dysnomia.DehashMe.Business;
-using Dysnomia.DehashMe.DataAccess;
-using Dysnomia.DehashMe.Common;
 
 namespace Dysnomia.DehashMe.WebApp {
 	public class Startup {
@@ -26,6 +26,8 @@ namespace Dysnomia.DehashMe.WebApp {
 			services.AddTransient<IHashService, HashService>();
 
 			services.AddControllersWithViews();
+			services.AddDistributedMemoryCache();
+			services.AddSession();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +42,8 @@ namespace Dysnomia.DehashMe.WebApp {
 			app.UseRouting();
 
 			app.UseAuthorization();
+
+			app.UseSession();
 
 			app.UseEndpoints(endpoints => {
 				endpoints.MapControllerRoute(

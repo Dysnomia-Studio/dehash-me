@@ -20,69 +20,70 @@ namespace Dysnomia.DehashMe.DataAccess {
 		}
 
 		public async Task<IEnumerable<SavedHash>> SearchByHash(string hash) {
-			using (var connection = new NpgsqlConnection(connectionString)) {
-				var reader = await DbHelper.ExecuteQuery(
-					connection,
-					"SELECT * FROM \"hashLists\" WHERE hash=@hash",
-					new Dictionary<string, object>() {
-					{ "hash", hash }
-					}
-				);
+			using var connection = new NpgsqlConnection(connectionString);
 
-				return SavedHash.MapListFromReader(reader);
-			}
+			var reader = await DbHelper.ExecuteQuery(
+				connection,
+				"SELECT * FROM \"hashLists\" WHERE hash=@hash",
+				new Dictionary<string, object>() {
+									{ "hash", hash }
+				}
+			);
+
+			return SavedHash.MapListFromReader(reader);
 		}
 
 		public async Task<HashSet<SavedHash>> SearchByText(string text) {
-			using (var connection = new NpgsqlConnection(connectionString)) {
-				var reader = await DbHelper.ExecuteQuery(
-					connection,
-					"SELECT * FROM \"hashLists\" WHERE text=@text",
-					new Dictionary<string, object>() {
-						{ "text", text }
-					}
-				);
+			using var connection = new NpgsqlConnection(connectionString);
 
-				return SavedHash.MapListFromReader(reader);
-			}
+			var reader = await DbHelper.ExecuteQuery(
+				connection,
+				"SELECT * FROM \"hashLists\" WHERE text=@text",
+				new Dictionary<string, object>() {
+						{ "text", text }
+				}
+			);
+
+			return SavedHash.MapListFromReader(reader);
+
 		}
 
 		public async void InsertAll(HashSet<SavedHash> hashes) {
 			if (!hashes.Any()) { return; }
 
-			using (var connection = new NpgsqlConnection(connectionString)) {
-				StringBuilder query = new StringBuilder("INSERT INTO public.\"hashLists\"(type, text, hash) VALUES");
+			using var connection = new NpgsqlConnection(connectionString);
 
-				Dictionary<string, object> parameters = new Dictionary<string, object>();
+			StringBuilder query = new StringBuilder("INSERT INTO public.\"hashLists\"(type, text, hash) VALUES");
 
-				int i = 0;
-				foreach (var hash in hashes) {
-					query.Append("(@" + i + "_type, @" + i + "_text, @" + i + "_hash),");
+			Dictionary<string, object> parameters = new Dictionary<string, object>();
 
-					parameters.Add("@" + i + "_type", hash.Type);
-					parameters.Add("@" + i + "_text", hash.Text);
-					parameters.Add("@" + i + "_hash", hash.Hash);
+			int i = 0;
+			foreach (var hash in hashes) {
+				query.Append("(@" + i + "_type, @" + i + "_text, @" + i + "_hash),");
 
-					i++;
-				}
+				parameters.Add("@" + i + "_type", hash.Type);
+				parameters.Add("@" + i + "_text", hash.Text);
+				parameters.Add("@" + i + "_hash", hash.Hash);
 
-				query.Remove(query.Length - 1, 1); /// on supprime la dernière virgule
-
-				await DbHelper.ExecuteNonQuery(connection, query.ToString(), parameters);
+				i++;
 			}
+
+			query.Remove(query.Length - 1, 1); /// on supprime la dernière virgule
+
+			await DbHelper.ExecuteNonQuery(connection, query.ToString(), parameters);
 		}
 
 		public async Task<int> Count() {
-			using (var connection = new NpgsqlConnection(connectionString)) {
-				var reader = await DbHelper.ExecuteQuery(
-					connection,
-					"SELECT reltuples::BIGINT AS approximate_row_count FROM pg_class WHERE relname = 'hashLists'"
-				);
+			using var connection = new NpgsqlConnection(connectionString);
 
-				reader.Read();
+			var reader = await DbHelper.ExecuteQuery(
+				connection,
+				"SELECT reltuples::BIGINT AS approximate_row_count FROM pg_class WHERE relname = 'hashLists'"
+			);
 
-				return DbReaderMapper.GetInt(reader, "approximate_row_count");
-			}
+			reader.Read();
+
+			return DbReaderMapper.GetInt(reader, "approximate_row_count");
 		}
 	}
 }

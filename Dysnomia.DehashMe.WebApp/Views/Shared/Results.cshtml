@@ -8,8 +8,8 @@
     <div style="text-align: center;">
         <h3>Results</h3>
     </div>
-    <table class="hash-results">
-        <tr><th>@ViewData["Result_Head"]</th><th>Hash Algorithm</th></tr>
+    <table class="hash-results" summary="Result list">
+        <tr><th scope="col">@ViewData["Result_Head"]</th><th scope="col">Hash Algorithm</th></tr>
 
         @foreach (var result in results) {
             <tr>

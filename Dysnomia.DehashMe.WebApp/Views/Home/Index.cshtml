@@ -20,7 +20,7 @@
         2) Use multiple and strong hashes (like whirlpool, bcrypt or argon2)<br />
         3) Salt your hashes with long and alphanumericals "words", you can generate your salt by hashing multiple times the timestamp of account creation with username for example (but keep the recipe secret !).<br />
         <br /><br />
-        <b><u>Warning:</u></b> Do not use this website in illegal or millitary purposes. We are not responsible of bad (or illegal) usage of this tool.<br />
+        <strong><u>Warning:</u></strong> Do not use this website in illegal or millitary purposes. We are not responsible of bad (or illegal) usage of this tool.<br />
     </section>
     <form class="hash-form" method="post">
         <textarea id="searchText" name="searchText" placeholder="Some input text to hash or dehash ...">@ViewData["SearchText"]</textarea>
@@ -62,7 +62,7 @@
     }
 
     <footer>
-        Created by <a href="https://dysnomia.studio" target="_blank">Dysnomia</a> - Copyright 2017-@DateTime.Now.Year<br />
+        Created by <a href="https://dysnomia.studio" rel="noopener noreferrer" target="_blank">Dysnomia</a> - Copyright 2017-@DateTime.Now.Year<br />
         <span id="hashCount">About 65 million</span> hash stored !<br /><br />
         Our other websites: <a href="https://howtoopen.me">HowToOpen.me</a> - <a href="https://whoowns.me">WhoOwns.me</a>
     </footer>

@@ -65,7 +65,7 @@ namespace Dysnomia.DehashMe.Business {
 			var alreadySavedResults = await hashDataAccess.SearchByText(text);
 
 			var generatedHashes = GenerateHashes(text);
-			alreadySavedResults.ExceptWith(generatedHashes);
+			generatedHashes.ExceptWith(alreadySavedResults);
 
 			hashDataAccess.InsertAll(generatedHashes);
 

@@ -16,16 +16,16 @@ namespace Dysnomia.DehashMe.WebApp.Controllers {
 			this.hashService = hashService;
 		}
 
-		public string GetIp() {
-			return HttpContext.Connection.RemoteIpAddress.ToString();
+		private string GetIp() {
+			return (HttpContext.Connection.RemoteIpAddress != null ? HttpContext.Connection.RemoteIpAddress.ToString() : "?");
 		}
 
-		public void SetSessionsVars() {
+		private void SetSessionsVars() {
 			HttpContext.Session.SetString("Ip", GetIp());
 			HttpContext.Session.SetString("Time", DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString());
 		}
 
-		public bool IsBot() {
+		private bool IsBot() {
 			if (HttpContext.Session.GetString("Time") == null) { return true; }
 
 			var time = DateTime.Parse(

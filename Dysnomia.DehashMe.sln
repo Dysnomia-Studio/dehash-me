@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dysnomia.DehashMe.WebApp", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dysnomia.DehashMe.DataAccess", "Dysnomia.DehashMe.DataAccess\Dysnomia.DehashMe.DataAccess.csproj", "{1B6F5764-700A-4CD3-A47D-243FA2ED6781}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dysnomia.DehashMe.Common", "Dysnomia.DehashMe.Common\Dysnomia.DehashMe.Common.csproj", "{A5F01A15-2F41-4E46-A375-0CE918038A76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dysnomia.DehashMe.Common", "Dysnomia.DehashMe.Common\Dysnomia.DehashMe.Common.csproj", "{A5F01A15-2F41-4E46-A375-0CE918038A76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dysnomia.DehashMe.Business", "Dysnomia.DehashMe.Business\Dysnomia.DehashMe.Business.csproj", "{4445A5B6-0A1B-41C1-9492-8C3E684E0971}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dysnomia.DehashMe.Business", "Dysnomia.DehashMe.Business\Dysnomia.DehashMe.Business.csproj", "{4445A5B6-0A1B-41C1-9492-8C3E684E0971}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dysnomia.DehashMe.WebApp.Tests", "Dysnomia.DehashMe.WebApp.Tests\Dysnomia.DehashMe.WebApp.Tests.csproj", "{EDD69A06-D56D-4AB7-8412-B6577155799B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{4445A5B6-0A1B-41C1-9492-8C3E684E0971}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4445A5B6-0A1B-41C1-9492-8C3E684E0971}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4445A5B6-0A1B-41C1-9492-8C3E684E0971}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDD69A06-D56D-4AB7-8412-B6577155799B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDD69A06-D56D-4AB7-8412-B6577155799B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDD69A06-D56D-4AB7-8412-B6577155799B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDD69A06-D56D-4AB7-8412-B6577155799B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

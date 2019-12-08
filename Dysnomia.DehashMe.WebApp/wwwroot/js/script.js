@@ -2,7 +2,9 @@
 async function hashCount() {
 	const countHashResponse = await fetch('/count');
 
-	if (countHashResponse.status !== 200) { return; }
+	if (countHashResponse.status !== 200) {
+		return;
+	}
 	let countHash = await countHashResponse.text();
 
 	const text = [];
@@ -24,7 +26,8 @@ $(document).ready(() => {
 	$('#background svg').attr('height', $(window).innerHeight());
 
 	setInterval(function () {
-		const i = count++;
+		const i = count;
+		count++;
 		count %= 10;
 		$('#background-' + i).append('<circle id="bubble-' + i + '" fill="#27ae60" fill-opacity="0.1" class="background-bubble" cx="' +
 			Math.floor(Math.random() * $(window).innerWidth()) + '" cy="' +

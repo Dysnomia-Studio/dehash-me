@@ -3,9 +3,10 @@ WORKDIR /app
 
 # Build Project
 COPY . ./
-RUN dotnet sonarscanner begin /k:"dehash-me" /d:sonar.host.url="***REMOVED***" /d:sonar.login="***REMOVED***"
+RUN dotnet sonarscanner begin /k:"dehash-me" /d:sonar.host.url="***REMOVED***" /d:sonar.login="***REMOVED***" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.coverage.exclusions="**Test*.cs"
 RUN dotnet restore Dysnomia.DehashMe.sln
 RUN dotnet publish Dysnomia.DehashMe.sln -c Release -o out
+RUN dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 RUN dotnet sonarscanner end /d:sonar.login="***REMOVED***"
 
 # Build runtime image

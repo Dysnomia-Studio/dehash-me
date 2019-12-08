@@ -1,9 +1,12 @@
+using System;
+
 using Dysnomia.DehashMe.Business;
 using Dysnomia.DehashMe.Common;
 using Dysnomia.DehashMe.DataAccess;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -44,6 +47,21 @@ namespace Dysnomia.DehashMe.WebApp {
 			app.UseAuthorization();
 
 			app.UseSession();
+
+			if (env.IsEnvironment("Testing")) {
+				app.Use(async (context, next) => {
+					if (!context.Request.Query.ContainsKey("bot") || context.Request.Query["bot"] != "true") {
+						context.Session.SetString("Ip", "?");
+
+						var date = DateTime.Now;
+						date.AddSeconds(-5);
+						context.Session.SetString("Time", date.ToLongDateString() + " " + date.ToLongTimeString());
+					}
+
+					await next();
+				});
+			}
+
 
 			app.UseEndpoints(endpoints => {
 				endpoints.MapControllerRoute(

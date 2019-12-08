@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -34,7 +34,7 @@ namespace Dysnomia.DehashMe.WebApp.Controllers {
 			time.AddSeconds(2);
 
 			return HttpContext.Session.GetString("Ip") != GetIp() ||
-				(time < DateTime.Now);
+				(time > DateTime.Now);
 		}
 
 		[HttpGet]
@@ -50,7 +50,7 @@ namespace Dysnomia.DehashMe.WebApp.Controllers {
 		public async Task<IActionResult> Index(string hash, string dehash, string searchText) {
 			ViewData["Result"] = null;
 
-			if (IsBot() || !string.IsNullOrWhiteSpace(searchText)) {
+			if (!IsBot() && !string.IsNullOrWhiteSpace(searchText)) {
 				ViewData["SearchText"] = searchText;
 
 				if (hash != null) {

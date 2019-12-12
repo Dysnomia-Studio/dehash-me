@@ -13,7 +13,7 @@ namespace Dysnomia.DehashMe.Common.Models {
 		public static HashSet<SavedHash> MapListFromReader(IDataReader reader) {
 			HashSet<SavedHash> list = new HashSet<SavedHash>();
 
-			while (reader.Read()) {
+			while(reader.Read()) {
 				list.Add(MapFromReader(reader));
 			}
 
@@ -22,9 +22,9 @@ namespace Dysnomia.DehashMe.Common.Models {
 
 		public static SavedHash MapFromReader(IDataReader reader) {
 			var savedHash = new SavedHash {
-				Hash = DbReaderMapper.GetString(reader, "hash"),
-				Type = DbReaderMapper.GetString(reader, "type"),
-				Text = DbReaderMapper.GetString(reader, "text")
+				Hash = reader.GetString("hash"),
+				Type = reader.GetString("type"),
+				Text = reader.GetString("text")
 			};
 
 			return savedHash;
@@ -35,7 +35,7 @@ namespace Dysnomia.DehashMe.Common.Models {
 		}
 
 		public override bool Equals(object obj) {
-			return Type.Equals(((SavedHash)obj).Type);
+			return Type.Equals(((SavedHash) obj).Type);
 		}
 	}
 }

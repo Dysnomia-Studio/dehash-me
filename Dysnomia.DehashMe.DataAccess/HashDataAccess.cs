@@ -22,8 +22,7 @@ namespace Dysnomia.DehashMe.DataAccess {
 		public async Task<IEnumerable<SavedHash>> SearchByHash(string hash) {
 			using var connection = new NpgsqlConnection(connectionString);
 
-			var reader = await DbHelper.ExecuteQuery(
-				connection,
+			var reader = await connection.ExecuteQuery(
 				"SELECT * FROM \"hashLists\" WHERE hash=@hash",
 				new Dictionary<string, object>() {
 									{ "hash", hash }
@@ -36,8 +35,7 @@ namespace Dysnomia.DehashMe.DataAccess {
 		public async Task<HashSet<SavedHash>> SearchByText(string text) {
 			using var connection = new NpgsqlConnection(connectionString);
 
-			var reader = await DbHelper.ExecuteQuery(
-				connection,
+			var reader = await connection.ExecuteQuery(
 				"SELECT * FROM \"hashLists\" WHERE text=@text",
 				new Dictionary<string, object>() {
 						{ "text", text }
@@ -70,20 +68,19 @@ namespace Dysnomia.DehashMe.DataAccess {
 
 			query.Remove(query.Length - 1, 1); /// on supprime la dernière virgule
 
-			await DbHelper.ExecuteNonQuery(connection, query.ToString(), parameters);
+			await connection.ExecuteNonQuery(query.ToString(), parameters);
 		}
 
 		public async Task<int> Count() {
 			using var connection = new NpgsqlConnection(connectionString);
 
-			var reader = await DbHelper.ExecuteQuery(
-				connection,
+			var reader = await connection.ExecuteQuery(
 				"SELECT reltuples::BIGINT AS approximate_row_count FROM pg_class WHERE relname = 'hashLists'"
 			);
 
 			reader.Read();
 
-			return DbReaderMapper.GetInt(reader, "approximate_row_count");
+			return reader.GetInt("approximate_row_count");
 		}
 	}
 }

@@ -30,7 +30,14 @@ namespace Dysnomia.DehashMe.WebApp {
 
 			services.AddControllersWithViews();
 			services.AddDistributedMemoryCache();
-			services.AddSession();
+			services.AddSession((options) => {
+				// You might want to only set the application cookies over a secure connection:
+				options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+				options.Cookie.SameSite = SameSiteMode.Strict;
+				options.Cookie.HttpOnly = true;
+				// Make the session cookie essential
+				options.Cookie.IsEssential = true;
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

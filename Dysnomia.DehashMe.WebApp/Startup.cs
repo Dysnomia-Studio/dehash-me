@@ -1,5 +1,7 @@
 using System;
 
+using Dysnomia.Common.Stats;
+
 using Dysnomia.DehashMe.Business;
 using Dysnomia.DehashMe.Common;
 using Dysnomia.DehashMe.DataAccess;
@@ -67,8 +69,13 @@ namespace Dysnomia.DehashMe.WebApp {
 
 					await next();
 				});
-			}
+			} else {
+				app.Use(async (context, next) => {
+					StatsRecorder.NewVisit(context);
 
+					await next();
+				});
+			}
 
 			app.UseEndpoints(endpoints => {
 				endpoints.MapControllerRoute(

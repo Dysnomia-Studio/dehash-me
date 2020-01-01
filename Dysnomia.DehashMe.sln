@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dysnomia.DehashMe.Common", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dysnomia.DehashMe.Business", "Dysnomia.DehashMe.Business\Dysnomia.DehashMe.Business.csproj", "{4445A5B6-0A1B-41C1-9492-8C3E684E0971}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dysnomia.DehashMe.WebApp.Tests", "Dysnomia.DehashMe.WebApp.Tests\Dysnomia.DehashMe.WebApp.Tests.csproj", "{EDD69A06-D56D-4AB7-8412-B6577155799B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dysnomia.DehashMe.WebApp.Tests", "Dysnomia.DehashMe.WebApp.Tests\Dysnomia.DehashMe.WebApp.Tests.csproj", "{EDD69A06-D56D-4AB7-8412-B6577155799B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

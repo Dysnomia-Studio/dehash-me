@@ -32,7 +32,9 @@ namespace Dysnomia.DehashMe.WebApp {
 
 			services.AddControllersWithViews();
 			services.AddDistributedMemoryCache();
-			services.AddSession((options) => {
+			services.AddSession(options => {
+				// Set a short timeout for easy testing.
+				options.IdleTimeout = TimeSpan.FromMinutes(60);
 				// You might want to only set the application cookies over a secure connection:
 				options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 				options.Cookie.SameSite = SameSiteMode.Strict;

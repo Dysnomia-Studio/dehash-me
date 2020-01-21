@@ -1,7 +1,7 @@
-using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
+using Dysnomia.Common.Security;
 using Dysnomia.DehashMe.Business;
 using Dysnomia.DehashMe.WebApp.Models;
 
@@ -16,31 +16,10 @@ namespace Dysnomia.DehashMe.WebApp.Controllers {
 			this.hashService = hashService;
 		}
 
-		private string GetIp() {
-			return (HttpContext.Connection.RemoteIpAddress != null ? HttpContext.Connection.RemoteIpAddress.ToString() : "?");
-		}
-
-		private void SetSessionsVars() {
-			HttpContext.Session.SetString("Ip", GetIp());
-			HttpContext.Session.SetString("Time", DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString());
-		}
-
-		private bool IsBot() {
-			if (HttpContext.Session.GetString("Time") == null) { return true; }
-
-			var time = DateTime.Parse(
-				HttpContext.Session.GetString("Time")
-			);
-			time.AddSeconds(2);
-
-			return HttpContext.Session.GetString("Ip") != GetIp() ||
-				(time > DateTime.Now);
-		}
-
 		[HttpGet]
 		[Route("/")]
 		public IActionResult Index() {
-			SetSessionsVars();
+			BotHelper.SetSessionsVars(HttpContext);
 
 			return View();
 		}
@@ -50,7 +29,7 @@ namespace Dysnomia.DehashMe.WebApp.Controllers {
 		public async Task<IActionResult> Index(string hash, string dehash, string searchText) {
 			ViewData["Result"] = null;
 
-			if (!IsBot() && !string.IsNullOrWhiteSpace(searchText)) {
+			if (!BotHelper.IsBot(HttpContext) && !string.IsNullOrWhiteSpace(searchText)) {
 				ViewData["SearchText"] = searchText;
 
 				if (hash != null) {
@@ -64,7 +43,7 @@ namespace Dysnomia.DehashMe.WebApp.Controllers {
 				}
 			}
 
-			SetSessionsVars();
+			BotHelper.SetSessionsVars(HttpContext);
 
 			return View();
 		}

@@ -31,7 +31,7 @@ namespace Dysnomia.DehashMe.WebApp {
 			services.AddTransient<IHashService, HashService>();
 
 			services.AddControllersWithViews();
-			services.AddDistributedMemoryCache();
+			services.AddMemoryCache();
 			services.AddSession(options => {
 				// Set a short timeout for easy testing.
 				options.IdleTimeout = TimeSpan.FromMinutes(60);

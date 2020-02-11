@@ -1,0 +1,46 @@
+kind: pipeline
+name: dehash-me-node
+
+steps:
+- name: docker
+  image: plugins/docker
+  volumes:
+  - name: docker_sock
+    path: /var/run/docker.sock
+  settings:
+    repo: dysnomia/dehash-me-node
+    dockerfile: Dockerfile
+    tags: ${DRONE_BRANCH}
+    dry_run: true
+    pull-image: false
+  environment:
+    PLUGIN_PULL_IMAGE: false
+
+  when:
+    event:
+    - push
+
+- name: discord
+  pull: default
+  image: appleboy/drone-discord
+  settings:
+    webhook_id: ***REMOVED***
+    webhook_token: ***REMOVED***
+    message: >
+      {{#success build.status}}
+        Build **{{repo.name}}** on branch **${DRONE_BRANCH}** succeeded.
+      {{else}}
+        Build **{{repo.name}}** on branch **${DRONE_BRANCH}** failed.
+      {{/success}}
+  when:
+    event:
+    - push
+    status: 
+    - changed
+    - failure
+    - success
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock

@@ -24,66 +24,94 @@ namespace Dysnomia.DehashMe.Business {
 		}
 
 		public async Task<Dictionary<string, string>> SearchByHash(string searchedHash) {
-			// TODO: multiples hashes
+			try {
+				// TODO: multiples hashes
 
-			var hashes = await hashDataAccess.SearchByHash(searchedHash);
+				var hashes = await hashDataAccess.SearchByHash(searchedHash);
 
-			var dico = new Dictionary<string, string>();
-			foreach (var hash in hashes) {
-				if (dico.ContainsKey(hash.Type)) { continue; }
+				var dico = new Dictionary<string, string>();
+				foreach (var hash in hashes) {
+					if (dico.ContainsKey(hash.Type)) { continue; }
 
-				dico.Add(
-					hash.Type,
-					hash.Text
-				);
+					dico.Add(
+						hash.Type,
+						hash.Text
+					);
+				}
+
+				return dico;
+			} catch (Exception e) {
+				Console.WriteLine(e.Message);
+				Console.WriteLine(e.StackTrace);
 			}
 
-			return dico;
+			return null;
 		}
 
 		public HashSet<SavedHash> GenerateHashes(string text) {
-			var generatedHashes = new HashSet<SavedHash>();
+			try {
+				var generatedHashes = new HashSet<SavedHash>();
 
-			foreach (var kvp in hashAlgorithms) {
-				HashAlgorithm hashAlgorithm = (HashAlgorithm)Activator.CreateInstance(kvp.Value);
+				foreach (var kvp in hashAlgorithms) {
+					HashAlgorithm hashAlgorithm = (HashAlgorithm)Activator.CreateInstance(kvp.Value);
 
-				generatedHashes.Add(new SavedHash() {
-					Text = text,
-					Type = kvp.Key,
-					Hash = BitConverter.ToString(
-							hashAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(text))
-						).Replace("-", string.Empty).ToLower()
-				});
+					generatedHashes.Add(new SavedHash() {
+						Text = text,
+						Type = kvp.Key,
+						Hash = BitConverter.ToString(
+								hashAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(text))
+							).Replace("-", string.Empty).ToLower()
+					});
+				}
+
+				return generatedHashes;
+			} catch (Exception e) {
+				Console.WriteLine(e.Message);
+				Console.WriteLine(e.StackTrace);
 			}
 
-			return generatedHashes;
+			return null;
 		}
 
 		public async Task<Dictionary<string, string>> SearchByText(string text) {
-			// TODO: multiples texts
+			try {
+				// TODO: multiples texts
 
-			var alreadySavedResults = await hashDataAccess.SearchByText(text);
+				var alreadySavedResults = await hashDataAccess.SearchByText(text);
 
-			var generatedHashes = GenerateHashes(text);
-			generatedHashes.ExceptWith(alreadySavedResults);
+				var generatedHashes = GenerateHashes(text);
+				generatedHashes.ExceptWith(alreadySavedResults);
 
-			hashDataAccess.InsertAll(generatedHashes);
+				hashDataAccess.InsertAll(generatedHashes);
 
-			alreadySavedResults.UnionWith(generatedHashes);
+				alreadySavedResults.UnionWith(generatedHashes);
 
-			var dico = new Dictionary<string, string>();
-			foreach (var hash in alreadySavedResults) {
-				dico.Add(
-					hash.Type,
-					hash.Hash
-				);
+				var dico = new Dictionary<string, string>();
+				foreach (var hash in alreadySavedResults) {
+					dico.Add(
+						hash.Type,
+						hash.Hash
+					);
+				}
+
+				return dico;
+			} catch (Exception e) {
+				Console.WriteLine(e.Message);
+				Console.WriteLine(e.StackTrace);
 			}
 
-			return dico;
+			return null;
 		}
 
 		public async Task<int> Count() {
-			return await hashDataAccess.Count();
+			try {
+				return await hashDataAccess.Count();
+			} catch (Exception e) {
+				Console.WriteLine(e.Message);
+				Console.WriteLine(e.StackTrace);
+			}
+
+			return 0;
 		}
 	}
 }

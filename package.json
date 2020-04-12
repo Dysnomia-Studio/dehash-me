@@ -1,0 +1,12 @@
+{
+  "name": "dysnomia-dehashme-server",
+  "description": "NodeJs Server for Dehash.me used to generate more data on db",
+  "author": "Elanis",
+  "main": "app.js",
+  "scripts": {
+    "start": "echo \"N/A\""
+  },
+  "dependencies": {
+    "pg": "^7.18.2"
+  }
+}

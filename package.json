@@ -4,7 +4,7 @@
   "author": "Elanis",
   "main": "app.js",
   "scripts": {
-    "start": "echo \"N/A\""
+    "start": "sh wait.sh"
   },
   "dependencies": {
     "pg": "^7.18.2"

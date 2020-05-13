@@ -2,7 +2,7 @@ require('./passCalc')();
 
 let j = 1,
 	m = 1,
-	y = 28;
+	y = 0;
 
 function birthPass() {
 	let text = '';

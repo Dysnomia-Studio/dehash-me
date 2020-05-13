@@ -2,8 +2,7 @@ require('./passCalc')();
 
 let j = 1,
 	m = 1,
-	y = 0,
-	total = false;
+	y = 28;
 
 function birthPass() {
 	let text = '';
@@ -14,17 +13,11 @@ function birthPass() {
 	if(m < 10)	{ text += '0' + m; }
 	else 		{ text += m; }
 
-	if(total)	{ text += y; }
-	else		{
-		if(y%100 < 10)	 { text += '0' + y%100; }
-		else		 { text += y%100; }
-	}
+	if(y < 10)	 { text += '0' + y; }
+	else 		{ text += y; }
 
 	calcAndSaveHash(text, function() {
-		if(total) {
-			j++;
-		}
-		total = !total;
+		j++;
 
 		if(j>31) { j = 1; m++; }
 		if(m>31) { m = 1; y++; console.log(y); }

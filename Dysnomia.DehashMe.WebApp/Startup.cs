@@ -41,6 +41,9 @@ namespace Dysnomia.DehashMe.WebApp {
 				options.Cookie.HttpOnly = true;
 				// Make the session cookie essential
 				options.Cookie.IsEssential = true;
+
+				options.Cookie.Expiration = TimeSpan.FromMinutes(60);
+				options.Cookie.MaxAge = TimeSpan.FromMinutes(60);
 			});
 		}
 

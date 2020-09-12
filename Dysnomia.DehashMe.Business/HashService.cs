@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,23 +24,23 @@ namespace Dysnomia.DehashMe.Business {
 			this.hashDataAccess = hashDataAccess;
 		}
 
-		public async Task<Dictionary<string, string>> SearchByHash(string searchedHash) {
+		public async Task<IEnumerable<SavedHash>> SearchByHash(string searchedHash) {
 			try {
-				// TODO: multiples hashes
+				List<string> lines = searchedHash.Split(
+					new[] { "\r\n", "\r", "\n" },
+					StringSplitOptions.None
+				).Where((elt) => !string.IsNullOrWhiteSpace(elt)).ToList();
 
-				var hashes = await hashDataAccess.SearchByHash(searchedHash);
-
-				var dico = new Dictionary<string, string>();
-				foreach (var hash in hashes) {
-					if (dico.ContainsKey(hash.Type)) { continue; }
-
-					dico.Add(
-						hash.Type,
-						hash.Text
-					);
+				while (lines.Count > 5) {
+					lines.RemoveAt(5);
 				}
 
-				return dico;
+				IEnumerable<SavedHash> hashes = new List<SavedHash>();
+				foreach (var hash in lines) {
+					hashes = hashes.Concat(await hashDataAccess.SearchByHash(hash));
+				}
+
+				return hashes;
 			} catch (Exception e) {
 				Console.WriteLine(e.Message);
 				Console.WriteLine(e.StackTrace);
@@ -73,28 +74,31 @@ namespace Dysnomia.DehashMe.Business {
 			return null;
 		}
 
-		public async Task<Dictionary<string, string>> SearchByText(string text) {
+		public async Task<IEnumerable<SavedHash>> SearchByText(string text) {
 			try {
-				// TODO: multiples texts
+				List<string> lines = text.Split(
+					new[] { "\r\n", "\r", "\n" },
+					StringSplitOptions.None
+				).Where((elt) => !string.IsNullOrWhiteSpace(elt)).ToList();
 
-				var alreadySavedResults = await hashDataAccess.SearchByText(text);
-
-				var generatedHashes = GenerateHashes(text);
-				generatedHashes.ExceptWith(alreadySavedResults);
-
-				hashDataAccess.InsertAll(generatedHashes);
-
-				alreadySavedResults.UnionWith(generatedHashes);
-
-				var dico = new Dictionary<string, string>();
-				foreach (var hash in alreadySavedResults) {
-					dico.Add(
-						hash.Type,
-						hash.Hash
-					);
+				while (lines.Count > 5) {
+					lines.RemoveAt(5);
 				}
 
-				return dico;
+				var alreadySavedResults = new HashSet<SavedHash>();
+
+				foreach (var currText in lines) {
+					alreadySavedResults.UnionWith(await hashDataAccess.SearchByText(currText));
+
+					var generatedHashes = GenerateHashes(currText);
+					generatedHashes.ExceptWith(alreadySavedResults);
+
+					hashDataAccess.InsertAll(generatedHashes);
+
+					alreadySavedResults.UnionWith(generatedHashes);
+				}
+
+				return alreadySavedResults;
 			} catch (Exception e) {
 				Console.WriteLine(e.Message);
 				Console.WriteLine(e.StackTrace);

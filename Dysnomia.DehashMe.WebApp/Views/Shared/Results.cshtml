@@ -1,5 +1,5 @@
 ﻿@{
-    var results = (Dictionary<string, string>)ViewData["Result"];
+    var results = (IEnumerable<Dysnomia.DehashMe.Common.Models.SavedHash>)ViewData["Result"];
 }
 
 @if (results.Count() == 0) {
@@ -9,12 +9,17 @@
         <h3>Results</h3>
     </div>
     <table class="hash-results" aria-describedby="Result list">
-        <tr><th scope="col">@ViewData["Result_Head"]</th><th scope="col">Hash Algorithm</th></tr>
+        <tr>
+            <th scope="col">Text</th>
+            <th scope="col">Hash Algorithm</th>
+            <th scope="col">Hashed result</th>
+        </tr>
 
         @foreach (var result in results) {
             <tr>
-                <td>@result.Value</td>
-                <td>@result.Key</td>
+                <td>@result.Text</td>
+                <td>@result.Type</td>
+                <td>@result.Hash</td>
             </tr>
         }
     </table>

@@ -54,14 +54,14 @@ namespace Dysnomia.DehashMe.Common.Models {
 		/// Override GetHashCode() to get same code if content is identical
 		/// </summary>
 		public override int GetHashCode() {
-			return StringComparer.InvariantCulture.GetHashCode(Type);
+			return StringComparer.InvariantCulture.GetHashCode(Text) + StringComparer.InvariantCulture.GetHashCode(Type);
 		}
 
 		/// <summary>
 		/// Override Equals() to check if two SavedHash are the same
 		/// </summary>
 		public override bool Equals(object obj) {
-			return Type.Equals(((SavedHash)obj).Type);
+			return Text.Equals(((SavedHash)obj).Text) && Type.Equals(((SavedHash)obj).Type);
 		}
 	}
 }

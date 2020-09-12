@@ -33,12 +33,10 @@ namespace Dysnomia.DehashMe.WebApp.Controllers {
 				ViewData["SearchText"] = searchText;
 
 				if (hash != null) {
-					ViewData["Result_Head"] = "Hash";
 					ViewData["Result"] = await hashService.SearchByText(searchText);
 				}
 
 				if (dehash != null) {
-					ViewData["Result_Head"] = "Text";
 					ViewData["Result"] = await hashService.SearchByHash(searchText.ToLower());
 				}
 			}

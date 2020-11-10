@@ -1,4 +1,4 @@
-FROM dysnomia/netcore-sdk-3-1 AS build-env
+FROM dysnomia/net-sdk-5-0 AS build-env
 WORKDIR /app
 
 # Build Project

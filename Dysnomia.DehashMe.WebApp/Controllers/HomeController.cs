@@ -30,14 +30,16 @@ namespace Dysnomia.DehashMe.WebApp.Controllers {
 			ViewData["Result"] = null;
 
 			if (!BotHelper.IsBot(HttpContext) && !string.IsNullOrWhiteSpace(searchText)) {
-				ViewData["SearchText"] = searchText;
+				string newSearchText = searchText.Trim().Replace("\u0000", "");
+
+				ViewData["SearchText"] = newSearchText;
 
 				if (hash != null) {
-					ViewData["Result"] = await hashService.SearchByText(searchText);
+					ViewData["Result"] = await hashService.SearchByText(newSearchText);
 				}
 
 				if (dehash != null) {
-					ViewData["Result"] = await hashService.SearchByHash(searchText.ToLower());
+					ViewData["Result"] = await hashService.SearchByHash(newSearchText.ToLower());
 				}
 			}
 

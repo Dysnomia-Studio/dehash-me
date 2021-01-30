@@ -24,8 +24,10 @@ steps:
   pull: default
   image: appleboy/drone-discord
   settings:
-    webhook_id: ***REMOVED***
-    webhook_token: ***REMOVED***
+    webhook_id:
+      from_secret: WEBHOOK_ID
+    webhook_token:
+      from_secret: WEBHOOK_TOKEN
     message: >
       {{#success build.status}}
         Build **{{repo.name}}** on branch **${DRONE_BRANCH}** succeeded.

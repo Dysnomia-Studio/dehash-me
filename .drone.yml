@@ -15,6 +15,14 @@ steps:
     pull-image: false
   environment:
     PLUGIN_PULL_IMAGE: false
+    SONAR_HOST: 
+      from_secret: SONAR_HOST
+    SONAR_TOKEN: 
+      from_secret: SONAR_TOKEN
+  settings:
+    build_args_from_env:
+      - SONAR_HOST
+      - SONAR_TOKEN
 
   when:
     event:
@@ -24,8 +32,10 @@ steps:
   pull: default
   image: appleboy/drone-discord
   settings:
-    webhook_id: ***REMOVED***
-    webhook_token: ***REMOVED***
+    webhook_id:
+      from_secret: WEBHOOK_ID
+    webhook_token:
+      from_secret: WEBHOOK_TOKEN
     message: >
       {{#success build.status}}
         Build **{{repo.name}}** on branch **${DRONE_BRANCH}** succeeded.

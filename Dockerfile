@@ -6,6 +6,7 @@ ARG SONAR_TOKEN
 
 # Build Project
 COPY . ./
+
 RUN dotnet sonarscanner begin /k:"dehash-me" /d:sonar.host.url="$SONAR_HOST" /d:sonar.login="$SONAR_TOKEN" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.coverage.exclusions="**Test*.cs"
 RUN dotnet restore Dysnomia.DehashMe.sln --ignore-failed-sources /p:EnableDefaultItems=false
 RUN dotnet publish Dysnomia.DehashMe.sln --no-restore -c Release -o out

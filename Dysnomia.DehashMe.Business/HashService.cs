@@ -79,7 +79,7 @@ namespace Dysnomia.DehashMe.Business {
 				List<string> lines = text.Split(
 					new[] { "\r\n", "\r", "\n" },
 					StringSplitOptions.None
-				).Where((elt) => !string.IsNullOrWhiteSpace(elt)).ToList();
+				).Where((elt) => !string.IsNullOrWhiteSpace(elt) && elt.Length < 100_000).ToList(); // Too large string might break database index
 
 				while (lines.Count > 5) {
 					lines.RemoveAt(5);

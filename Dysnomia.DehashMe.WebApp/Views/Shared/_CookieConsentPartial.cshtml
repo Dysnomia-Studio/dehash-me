@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Http.Features
+
+@{
+    var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    var showBanner = !consentFeature?.CanTrack ?? false;
+    var cookieString = consentFeature?.CreateConsentCookie();
+}
+
+@if (showBanner) {
+    <div id="cookieConsent" role="alert">
+        Hey ! We use some tasty cookies to make our website work. <a href="https://dysnomia.studio/privacy#dehash-me">Learn More in our privacy policy</a> (We promise, it's short).
+        <button type="button" data-dismiss="alert" aria-label="Close" data-cookie-string="@cookieString">
+            <span aria-hidden="true">Accept</span>
+        </button>
+    </div>
+    <script>
+        (function () {
+            var button = document.querySelector("#cookieConsent button[data-cookie-string]");
+            button.addEventListener("click", function (event) {
+                document.cookie = button.dataset.cookieString;
+                window.location.reload();
+            }, false);
+        })();
+    </script>
+}

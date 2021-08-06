@@ -1,4 +1,11 @@
-﻿<div id="background">
+﻿@using Microsoft.AspNetCore.Http.Features
+
+@{
+    var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+}
+
+
+<div id="background">
     <svg id="background-0" class="backgrounds"></svg>
     <svg id="background-1" class="backgrounds"></svg>
     <svg id="background-2" class="backgrounds"></svg>
@@ -37,6 +44,11 @@
              data-ad-client="***REMOVED***"
              data-ad-slot="***REMOVED***"
              data-ad-format="auto"></ins>
+        @if (!consentFeature?.CanTrack ?? false) {
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).requestNonPersonalizedAds = 1;
+        </script>
+        }
         <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>

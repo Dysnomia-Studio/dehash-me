@@ -27,6 +27,13 @@ namespace Dysnomia.DehashMe.WebApp {
 			var appSettingsSection = Configuration.GetSection("AppSettings");
 			services.Configure<AppSettings>(appSettingsSection);
 
+			services.Configure<CookiePolicyOptions>(options => {
+				// This lambda determines whether user consent for non-essential 
+				// cookies is needed for a given request.
+				options.CheckConsentNeeded = context => true;
+				options.MinimumSameSitePolicy = SameSiteMode.Strict;
+			});
+
 			services.AddTransient<IHashDataAccess, HashDataAccess>();
 			services.AddTransient<IHashService, HashService>();
 
@@ -54,9 +61,10 @@ namespace Dysnomia.DehashMe.WebApp {
 				app.UseExceptionHandler("/Home/Error");
 			}
 
+			app.UseHttpsRedirection();
 			app.UseStaticFiles();
-
 			app.UseRouting();
+			app.UseCookiePolicy();
 
 			app.UseAuthorization();
 

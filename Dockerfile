@@ -21,5 +21,5 @@ RUN dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
 FROM dysnomia/net-runtime-5-0
 WORKDIR /app
 COPY --from=build-env /app/out .
-HEALTHCHECK --interval=5m --timeout=3s CMD curl -f http://localhost/ && curl -f http://localhost/count || exit 1
+HEALTHCHECK --interval=2m --timeout=3s CMD curl -f http://localhost/ && curl -f http://localhost/count || exit 1
 ENTRYPOINT ["dotnet", "Dysnomia.DehashMe.WebApp.dll"]

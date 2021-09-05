@@ -150,14 +150,24 @@ footer a {
     background: #262626;
     padding: 1em;
     color: #ededed;
-    padding-right: 120px;
+    padding-right: 240px;
 }
 
 #cookieConsent a {
     color: white;
 }
 
-#cookieConsent button {
+#cookieConsent-refuse {
+    margin-left: auto;
+    width: 100px;
+    background: #ededed;
+    border: none;
+    padding: 0.5em;
+    right: 120px;
+    top: calc(50% - 1em);
+    position: absolute;
+}
+#cookieConsent-accept {
     margin-left: auto;
     width: 100px;
     background: #ededed;

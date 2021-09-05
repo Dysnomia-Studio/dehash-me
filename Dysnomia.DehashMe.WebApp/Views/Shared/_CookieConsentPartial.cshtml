@@ -6,20 +6,26 @@
     var cookieString = consentFeature?.CreateConsentCookie();
 }
 
-@if (showBanner) {
+@if (showBanner && Context.Request.Cookies["ConsentRefused"] != "true") {
     <div id="cookieConsent" role="alert">
         Hey ! We use some tasty cookies to make our website work. <a href="https://dysnomia.studio/privacy#dehash-me">Learn More in our privacy policy</a> (We promise, it's short).
-        <button type="button" data-dismiss="alert" aria-label="Close" data-cookie-string="@cookieString">
+        <button id="cookieConsent-refuse" type="button" data-dismiss="alert" aria-label="Close" data-cookie-string="@cookieString.Replace(".AspNet.Consent=yes", "ConsentRefused=true")">
+            <span aria-hidden="false">Refuse</span>
+        </button>
+        <button id="cookieConsent-accept" type="button" data-dismiss="alert" aria-label="Close" data-cookie-string="@cookieString">
             <span aria-hidden="true">Accept</span>
         </button>
     </div>
     <script>
         (function () {
-            var button = document.querySelector("#cookieConsent button[data-cookie-string]");
-            button.addEventListener("click", function (event) {
-                document.cookie = button.dataset.cookieString;
-                window.location.reload();
-            }, false);
+            const buttons = document.querySelectorAll("#cookieConsent button[data-cookie-string]");
+
+            for (const button of buttons) {
+                button.addEventListener("click", function (event) {
+                    document.cookie = button.dataset.cookieString;
+                    window.location.reload();
+                }, false);
+            }
         })();
     </script>
 }

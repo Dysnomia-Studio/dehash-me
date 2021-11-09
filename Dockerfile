@@ -9,7 +9,6 @@ ARG DEHASHME_CONNECTIONSTRING
 COPY . ./
 
 RUN jq ".AppSettings.ConnectionString = \"$DEHASHME_CONNECTIONSTRING\"" Dysnomia.DehashMe.WebApp/appsettings.json > tmp.appsettings.json && mv tmp.appsettings.json Dysnomia.DehashMe.WebApp/appsettings.json
-RUN jq ".AppSettings.ConnectionString = \"$DEHASHME_CONNECTIONSTRING\"" Dysnomia.DehashMe.WebApp.Tests/appsettings.json > tmp.appsettings.json && mv tmp.appsettings.json Dysnomia.DehashMe.WebApp.Tests/appsettings.json
 
 RUN dotnet sonarscanner begin /k:"dehash-me" /d:sonar.host.url="$SONAR_HOST" /d:sonar.login="$SONAR_TOKEN" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.coverage.exclusions="**Test*.cs"
 RUN dotnet restore Dysnomia.DehashMe.sln --ignore-failed-sources /p:EnableDefaultItems=false

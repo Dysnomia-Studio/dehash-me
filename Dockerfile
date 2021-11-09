@@ -1,4 +1,4 @@
-FROM dysnomia/net-sdk-5-0 AS build-env
+FROM dysnomia/net-sdk-6-0 AS build-env
 WORKDIR /app
 
 ARG SONAR_HOST
@@ -18,7 +18,7 @@ RUN dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 RUN dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
 
 # Build runtime image
-FROM dysnomia/net-runtime-5-0
+FROM dysnomia/net-runtime-6-0
 WORKDIR /app
 COPY --from=build-env /app/out .
 HEALTHCHECK --interval=2m --timeout=3s CMD curl -f http://localhost/ && curl -f http://localhost/count || exit 1

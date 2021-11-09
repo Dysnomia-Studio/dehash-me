@@ -20,11 +20,11 @@ namespace Dysnomia.DehashMe.WebApp.Tests {
 		public HomeController() {
 			var config = new ConfigurationBuilder()
 				.AddJsonFile("appsettings.json", optional: false)
-				.AddUserSecrets<Startup>()
+				.AddUserSecrets<Startup>(optional: true)
 				.Build();
 
 			var builder = new WebHostBuilder()
-				 .UseConfiguration(config)
+				.UseConfiguration(config)
 				.UseStartup<Startup>()
 				.UseEnvironment("Testing");
 			var server = new TestServer(builder);

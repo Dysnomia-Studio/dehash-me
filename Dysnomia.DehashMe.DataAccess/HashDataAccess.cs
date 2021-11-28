@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Dysnomia.Common.SQL;
+﻿using Dysnomia.Common.SQL;
 using Dysnomia.DehashMe.Common;
 using Dysnomia.DehashMe.Common.Models;
 
 using Microsoft.Extensions.Options;
 
 using Npgsql;
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Dysnomia.DehashMe.DataAccess {
 	public class HashDataAccess : IHashDataAccess {
@@ -51,9 +51,9 @@ namespace Dysnomia.DehashMe.DataAccess {
 
 			using var connection = new NpgsqlConnection(connectionString);
 
-			StringBuilder query = new StringBuilder("INSERT INTO public.\"hashLists\"(type, text, hash) VALUES");
+			var query = new StringBuilder("INSERT INTO public.\"hashLists\"(type, text, hash) VALUES");
 
-			Dictionary<string, object> parameters = new Dictionary<string, object>();
+			var parameters = new Dictionary<string, object>();
 
 			int i = 0;
 			foreach (var hash in hashes) {

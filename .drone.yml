@@ -15,6 +15,7 @@ steps:
     pull-image: false
   environment:
     PLUGIN_PULL_IMAGE: false
+    DRONE_BRANCH: ${DRONE_BRANCH}
     SONAR_HOST: 
       from_secret: SONAR_HOST
     SONAR_TOKEN: 
@@ -23,6 +24,7 @@ steps:
       from_secret: DEHASHME_CONNECTIONSTRING
   settings:
     build_args_from_env:
+      - DRONE_BRANCH
       - SONAR_HOST
       - SONAR_TOKEN
       - DEHASHME_CONNECTIONSTRING

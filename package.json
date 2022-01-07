@@ -4,7 +4,7 @@
   "author": "Elanis",
   "main": "app.js",
   "scripts": {
-    "start": "node birthPass.js"
+    "start": "node loadFile.js"
   },
   "dependencies": {
     "pg": "^8.7.1"

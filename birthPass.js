@@ -20,7 +20,7 @@ function birthPass() {
 		j++;
 
 		if(j>31) { j = 1; m++; }
-		if(m>31) { m = 1; y++; console.log(y); }
+		if(m>31) { m = 1; y++; console.log(text); }
 
 		if(y > 3000) {
 			return;

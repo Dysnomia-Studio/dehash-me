@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Dysnomia.Common.Security" Version="1.1.0" />
-    <PackageReference Include="Dysnomia.Common.Stats" Version="1.3.0" />
+    <PackageReference Include="Dysnomia.Common.Stats" Version="1.4.0" />
   </ItemGroup>
 
   <ItemGroup>

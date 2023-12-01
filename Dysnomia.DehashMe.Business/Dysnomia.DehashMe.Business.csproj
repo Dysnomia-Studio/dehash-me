@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Dysnomia.DehashMe.Common\Dysnomia.DehashMe.Common.csproj" />
-    <ProjectReference Include="..\Dysnomia.DehashMe.DataAccess\Dysnomia.DehashMe.DataAccess.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Dysnomia.DehashMe.Common\Dysnomia.DehashMe.Common.csproj" />
+		<ProjectReference Include="..\Dysnomia.DehashMe.DataAccess\Dysnomia.DehashMe.DataAccess.csproj" />
+	</ItemGroup>
 
 </Project>

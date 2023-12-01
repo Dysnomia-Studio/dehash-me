@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<UserSecretsId>ebdfedad-7834-4a04-9871-0658482047ed</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Dysnomia.Common.Security" Version="1.1.1" />
-		<PackageReference Include="Dysnomia.Common.Stats" Version="1.5.0" />
+		<PackageReference Include="Dysnomia.Common.Security" Version="1.2.0" />
+		<PackageReference Include="Dysnomia.Common.Stats" Version="1.6.0" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using System;
+using System.Globalization;
+using System.Threading;
 
 namespace Dysnomia.DehashMe.WebApp {
 	public class Startup {
@@ -76,6 +78,7 @@ namespace Dysnomia.DehashMe.WebApp {
 
 						var date = DateTime.Now;
 						date.AddSeconds(-5);
+						Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture; // Fix for french windows client for Unit Tests
 						context.Session.SetString("Time", date.ToLongDateString() + " " + date.ToLongTimeString());
 					}
 

@@ -1,13 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-
 using FluentAssertions;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
+
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 using Xunit;
 
@@ -27,20 +28,20 @@ namespace Dysnomia.DehashMe.WebApp.Tests {
 				.UseConfiguration(config)
 				.UseStartup<Startup>()
 				.UseEnvironment("Testing");
-			var server = new TestServer(builder);
+			server = new TestServer(builder);
 
 			client = server.CreateClient();
 		}
 
 		[Fact]
-		public async void ShouldGet200_GET_Index() {
+		public async Task ShouldGet200_GET_Index() {
 			var response = await client.GetAsync("/");
 
 			response.StatusCode.Should().Be(HttpStatusCode.OK);
 		}
 
 		[Fact]
-		public async void ShouldGet200_POST_Bot_Index() {
+		public async Task ShouldGet200_POST_Bot_Index() {
 			var response = await client.PostAsync("/", new FormUrlEncodedContent(new Dictionary<string, string> {
 				{ "searchText", "test" },
 				{ "hash", "hash" }
@@ -51,7 +52,7 @@ namespace Dysnomia.DehashMe.WebApp.Tests {
 
 
 		[Fact]
-		public async void ShouldGet200_POST_EmptySearch_Index() {
+		public async Task ShouldGet200_POST_EmptySearch_Index() {
 			var response = await client.PostAsync("/", new FormUrlEncodedContent(new Dictionary<string, string> {
 				{ "searchText", "" },
 			}));
@@ -60,7 +61,7 @@ namespace Dysnomia.DehashMe.WebApp.Tests {
 		}
 
 		[Fact]
-		public async void ShouldGet200_POST_WhitespaceSearch_Index() {
+		public async Task ShouldGet200_POST_WhitespaceSearch_Index() {
 			var response = await client.PostAsync("/", new FormUrlEncodedContent(new Dictionary<string, string> {
 				{ "searchText", "     " },
 			}));
@@ -69,17 +70,7 @@ namespace Dysnomia.DehashMe.WebApp.Tests {
 		}
 
 		[Fact]
-		public async void ShouldGet200_POST_Hash_Index() {
-			var response = await client.PostAsync("/", new FormUrlEncodedContent(new Dictionary<string, string> {
-				{ "searchText", "test" },
-				{ "hash", "hash" }
-			}));
-
-			response.StatusCode.Should().Be(HttpStatusCode.OK);
-		}
-
-		[Fact]
-		public async void ShouldGet200_POST_Hash_New() {
+		public async Task ShouldGet200_POST_Hash_New() {
 			var response = await client.PostAsync("/", new FormUrlEncodedContent(new Dictionary<string, string> {
 				{ "searchText", DateTime.Now.ToLongDateString() + DateTime.Now.ToLongTimeString() },
 				{ "hash", "hash" }
@@ -89,7 +80,7 @@ namespace Dysnomia.DehashMe.WebApp.Tests {
 		}
 
 		[Fact]
-		public async void ShouldGet200_POST_Dehash_Index() {
+		public async Task ShouldGet200_POST_Dehash_Index() {
 			var response = await client.PostAsync("/", new FormUrlEncodedContent(new Dictionary<string, string> {
 				{ "searchText", "test" },
 				{ "dehash", "dehash" }
@@ -99,7 +90,7 @@ namespace Dysnomia.DehashMe.WebApp.Tests {
 		}
 
 		[Fact]
-		public async void ShouldGet200_GET_Count() {
+		public async Task ShouldGet200_GET_Count() {
 			var response = await client.GetAsync("/count");
 
 			response.StatusCode.Should().Be(HttpStatusCode.OK);

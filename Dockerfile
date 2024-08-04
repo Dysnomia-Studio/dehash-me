@@ -10,11 +10,12 @@ ARG GHP_TOKEN
 # Build Project
 COPY . ./
 
-RUN dotnet sonarscanner begin /k:"dehash-me" /d:sonar.host.url="$SONAR_HOST_URL" /d:sonar.login="$SONAR_TOKEN" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.coverage.exclusions="**Test*.cs" /d:sonar.branch.name="$GITHUB_BRANCH"
+RUN dotnet sonarscanner begin /k:"dehash-me" /d:sonar.host.url="$SONAR_HOST_URL" /d:sonar.token="$SONAR_TOKEN" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.coverage.exclusions="**Test*.cs" /d:sonar.branch.name="$GITHUB_BRANCH" /d:sonar.qualitygate.wait=true
 RUN dotnet restore Dysnomia.DehashMe.sln --ignore-failed-sources /p:EnableDefaultItems=false
 RUN dotnet publish Dysnomia.DehashMe.sln --no-restore -c Release -o out
-# RUN dotnet-coverage collect 'dotnet test --no-build --verbosity normal' -f xml  -o 'coverage.xml'
-RUN dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+
+#RUN dotnet-coverage collect 'dotnet test --verbosity normal' -f xml  -o 'coverage.xml'
+RUN dotnet sonarscanner end /d:sonar.token="$SONAR_TOKEN"
 
 # Build runtime image
 FROM ghcr.io/dysnomia-studio/net-runtime-8-0:main

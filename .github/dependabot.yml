@@ -1,4 +1,11 @@
+---
 version: 2
+registries:
+  github:
+    type: nuget-feed
+    url: https://nuget.pkg.github.com/dysnomia-studio/index.json
+    username: ${{ secrets.GHP_USER }}
+    password: ${{ secrets.GHP_TOKEN }}
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -10,5 +17,6 @@ updates:
       interval: "monthly"
   - package-ecosystem: "nuget"
     directory: "/"
+    registries: "*"
     schedule:
       interval: "monthly"

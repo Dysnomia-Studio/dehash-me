@@ -15,90 +15,82 @@ using System.Globalization;
 using System.Threading;
 
 namespace Dysnomia.DehashMe.WebApp {
-	public class Startup {
-		public Startup(IConfiguration configuration) {
-			Configuration = configuration;
-		}
+    public class Startup {
+        public Startup(IConfiguration configuration) {
+            Configuration = configuration;
+        }
 
-		public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services) {
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services) {
 
-			var appSettingsSection = Configuration.GetSection("AppSettings");
-			services.Configure<AppSettings>(appSettingsSection);
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
 
-			services.Configure<CookiePolicyOptions>(options => {
-				// This lambda determines whether user consent for non-essential 
-				// cookies is needed for a given request.
-				options.CheckConsentNeeded = context => true;
-				options.MinimumSameSitePolicy = SameSiteMode.Strict;
-			});
+            services.Configure<CookiePolicyOptions>(options => {
+                // This lambda determines whether user consent for non-essential 
+                // cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.Strict;
+            });
 
-			services.AddTransient<IHashDataAccess, HashDataAccess>();
-			services.AddTransient<IHashService, HashService>();
+            services.AddTransient<IHashDataAccess, HashDataAccess>();
+            services.AddTransient<IHashService, HashService>();
 
-			services.AddControllersWithViews();
-			services.AddMemoryCache();
-			services.AddSession(options => {
-				// Set a short timeout for easy testing.
-				options.IdleTimeout = TimeSpan.FromMinutes(60);
-				// You might want to only set the application cookies over a secure connection:
-				options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-				options.Cookie.SameSite = SameSiteMode.Strict;
-				options.Cookie.HttpOnly = true;
-				// Make the session cookie essential
-				options.Cookie.IsEssential = true;
+            services.AddControllersWithViews();
+            services.AddMemoryCache();
+            services.AddSession(options => {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                // You might want to only set the application cookies over a secure connection:
+                options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+                options.Cookie.SameSite = SameSiteMode.Strict;
+                options.Cookie.HttpOnly = true;
+                // Make the session cookie essential
+                options.Cookie.IsEssential = true;
 
-				options.Cookie.MaxAge = TimeSpan.FromMinutes(60);
-			});
-		}
+                options.Cookie.MaxAge = TimeSpan.FromMinutes(60);
+            });
+        }
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
-			if (env.IsDevelopment() || env.IsEnvironment("Testing")) {
-				app.UseDeveloperExceptionPage();
-			} else {
-				app.UseExceptionHandler("/Home/Error");
-			}
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+            if (env.IsDevelopment() || env.IsEnvironment("Testing")) {
+                app.UseDeveloperExceptionPage();
+            } else {
+                app.UseExceptionHandler("/Home/Error");
+            }
 
-			app.UseHttpsRedirection();
-			app.UseStaticFiles();
-			app.UseRouting();
-			app.UseCookiePolicy();
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseRouting();
+            app.UseCookiePolicy();
 
-			app.UseAuthorization();
+            app.UseAuthorization();
 
-			app.UseSession();
+            app.UseSession();
 
-			if (env.IsEnvironment("Testing")) {
-				app.Use(async (context, next) => {
-					if (!context.Request.Query.ContainsKey("bot") || context.Request.Query["bot"] != "true") {
-						context.Session.SetString("Ip", "?");
+            if (env.IsEnvironment("Testing")) {
+                app.Use(async (context, next) => {
+                    if (!context.Request.Query.ContainsKey("bot") || context.Request.Query["bot"] != "true") {
+                        context.Session.SetString("Ip", "?");
 
-						var date = DateTime.Now;
-						date.AddSeconds(-5);
-						Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture; // Fix for french windows client for Unit Tests
-						context.Session.SetString("Time", date.ToLongDateString() + " " + date.ToLongTimeString());
-					}
+                        var date = DateTime.Now;
+                        date.AddSeconds(-5);
+                        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture; // Fix for french windows client for Unit Tests
+                        context.Session.SetString("Time", date.ToLongDateString() + " " + date.ToLongTimeString());
+                    }
 
-					await next();
-				});
-			} else {
-				app.Use(async (context, next) => {
-					StatsRecorder.PrepareVisit(context);
+                    await next();
+                });
+            }
 
-					await next();
-
-					StatsRecorder.NewVisit(context);
-				});
-			}
-
-			app.UseEndpoints(endpoints => {
-				endpoints.MapControllerRoute(
-					name: "default",
-					pattern: "{controller=Home}/{action=Index}/{id?}");
-			});
-		}
-	}
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+        }
+    }
 }

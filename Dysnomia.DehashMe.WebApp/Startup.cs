@@ -22,21 +22,17 @@ namespace Dysnomia.DehashMe.WebApp {
         public IConfiguration Configuration { get; }
 
         private string GetConnectionString() {
-            var host = Configuration.GetValue<string>("PG_HOST");
-            var username = Configuration.GetValue<string>("PG_USER");
-            var password = Configuration.GetValue<string>("PG_PASSWORD");
-            var database = Configuration.GetValue<string>("PG_DB");
+            var host = Environment.GetEnvironmentVariable("PG_HOST");
+            var username = Environment.GetEnvironmentVariable("PG_USER");
+            var password = Environment.GetEnvironmentVariable("PG_PASSWORD");
+            var database = Environment.GetEnvironmentVariable("PG_DB");
 
             return $"Host={host};Database={database};Username={username};Password={password}";
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-            services.AddTransient<AppSettings>((service) => {
-                return new AppSettings() {
-                    ConnectionString = GetConnectionString()
-                };
-            });
+            services.Configure<AppSettings>(x => x.ConnectionString = GetConnectionString());
 
             services.Configure<CookiePolicyOptions>(options => {
                 // This lambda determines whether user consent for non-essential 

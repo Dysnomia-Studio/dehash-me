@@ -1,4 +1,3 @@
-using Dysnomia.Common.Stats;
 using Dysnomia.DehashMe.Business;
 using Dysnomia.DehashMe.Common;
 using Dysnomia.DehashMe.DataAccess;
@@ -22,11 +21,22 @@ namespace Dysnomia.DehashMe.WebApp {
 
         public IConfiguration Configuration { get; }
 
+        private string GetConnectionString() {
+            var host = Configuration.GetValue<string>("PG_HOST");
+            var username = Configuration.GetValue<string>("PG_USER");
+            var password = Configuration.GetValue<string>("PG_PASSWORD");
+            var database = Configuration.GetValue<string>("PG_DB");
+
+            return $"Host={host};Database={database};Username={username};Password={password}";
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-
-            var appSettingsSection = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
+            services.AddTransient<AppSettings>((service) => {
+                return new AppSettings() {
+                    ConnectionString = GetConnectionString()
+                };
+            });
 
             services.Configure<CookiePolicyOptions>(options => {
                 // This lambda determines whether user consent for non-essential 

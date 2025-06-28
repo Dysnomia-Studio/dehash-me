@@ -1,3 +1,4 @@
+using Dysnomia.Common.OpenTelemetry;
 using Dysnomia.DehashMe.Business;
 using Dysnomia.DehashMe.Common;
 using Dysnomia.DehashMe.DataAccess;
@@ -15,11 +16,13 @@ using System.Threading;
 
 namespace Dysnomia.DehashMe.WebApp {
     public class Startup {
-        public Startup(IConfiguration configuration) {
+        public Startup(IConfiguration configuration, IHostEnvironment environment) {
             Configuration = configuration;
+            HostEnvironment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        public IHostEnvironment HostEnvironment { get; }
 
         private string GetConnectionString() {
             var host = Environment.GetEnvironmentVariable("PG_HOST");
@@ -40,6 +43,8 @@ namespace Dysnomia.DehashMe.WebApp {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
             });
+
+            services.EnableOpenTelemetry(HostEnvironment);
 
             services.AddTransient<IHashDataAccess, HashDataAccess>();
             services.AddTransient<IHashService, HashService>();
